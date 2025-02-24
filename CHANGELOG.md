@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.66.1](https://github.com/paypal/paypal-messaging-components/compare/v1.66.0...v1.66.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* page type format in req query ([#1173](https://github.com/paypal/paypal-messaging-components/issues/1173)) ([6e14913](https://github.com/paypal/paypal-messaging-components/commit/6e14913dcd4f6afeb1cb638a0ee7fca405102ee9))
+
+
+### Code Refactoring
+
+* 5.1 styling for UK Hub ([da79d61](https://github.com/paypal/paypal-messaging-components/commit/da79d6126e97050abb6481b8997e911bae41dd3e))
+* update UK XO modal ([#1176](https://github.com/paypal/paypal-messaging-components/issues/1176)) ([ca848ef](https://github.com/paypal/paypal-messaging-components/commit/ca848efde68e36877dcf327a1df5f6cea7e9cc22))
+
 ## [1.66.0](https://github.com/paypal/paypal-messaging-components/compare/v1.65.4...v1.66.0) (2025-02-04)
 
 
