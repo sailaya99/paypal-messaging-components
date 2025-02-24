@@ -414,11 +414,16 @@
 
             h2 {
                 margin-top: 20px;
-                margin-bottom: 0px;
 
                 @include tablet {
                     margin-left: 20px;
                 }
+            }
+
+            .headline-gb {
+                font-family: $paypal-pro;
+                font-weight: bold;
+                margin-bottom: 5px;
             }
 
             .subheadline_p {

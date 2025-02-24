@@ -44,6 +44,7 @@
 
             .checkout & {
                 padding: 0px;
+                justify-content: space-between;
             }
 
             .v5Design & {
@@ -53,6 +54,64 @@
                 }
             }
         }
+    }
+
+    .dashed-line-0 {
+        border-bottom: 1px dashed $dark-gray;
+        width: 100%;
+        max-width: 115px;
+        height: 1px;
+        position: absolute;
+        left: 33%;
+        top: 2.75%;
+        transform: translate(-50%, -50%);
+
+        @include lander {
+            max-width: 130px;
+            left: 37%;
+            top: 3.5%;
+        }
+
+        @include mobile {
+            z-index: 9;
+            max-width: 105px;
+            height: 1px;
+            left: 33%;
+            top: 2.75%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .dashed-line-1 {
+        border-bottom: 1px dashed $dark-gray;
+        width: 100%;
+        max-width: 115px;
+        height: 1px;
+        position: absolute;
+        left: 67%;
+        top: 2.75%;
+        transform: translate(-50%, -50%);
+
+        @include lander {
+            max-width: 130px;
+            left: 63%;
+            top: 3.5%;
+        }
+
+        @include mobile {
+            border-bottom: 1px dashed $dark-gray;
+            width: 100%;
+            max-width: 103px;
+            height: 1px;
+            position: absolute;
+            left: 67%;
+            top: 2.75%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .dashed-line-2 {
+        display: none;
     }
 
     .learnMoreLink__container {
