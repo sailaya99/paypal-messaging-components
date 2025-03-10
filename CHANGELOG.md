@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.66.2](https://github.com/paypal/paypal-messaging-components/compare/v1.66.1...v1.66.2) (2025-03-10)
+
+
+### Bug Fixes
+
+* prefix client-id for lander modal events ([#1177](https://github.com/paypal/paypal-messaging-components/issues/1177)) ([092d71e](https://github.com/paypal/paypal-messaging-components/commit/092d71ed892a7e1e12980cc89232c9d97c4e1e86))
+
 ### [1.66.1](https://github.com/paypal/paypal-messaging-components/compare/v1.66.0...v1.66.1) (2025-02-24)
 
 
