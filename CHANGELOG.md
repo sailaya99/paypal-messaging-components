@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.66.3](https://github.com/paypal/paypal-messaging-components/compare/v1.66.2...v1.66.3) (2025-03-12)
+
+
+### Bug Fixes
+
+* update DE modal value in Offer Accordion ([#1180](https://github.com/paypal/paypal-messaging-components/issues/1180)) ([0656c1f](https://github.com/paypal/paypal-messaging-components/commit/0656c1f70cb0442a00f2a4a026e074e0cef80679))
+
 ### [1.66.2](https://github.com/paypal/paypal-messaging-components/compare/v1.66.1...v1.66.2) (2025-03-10)
 
 
