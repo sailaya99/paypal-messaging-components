@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.66.4](https://github.com/paypal/paypal-messaging-components/compare/v1.66.3...v1.66.4) (2025-03-18)
+
+
+### Bug Fixes
+
+* remove alt tag from div ([#1184](https://github.com/paypal/paypal-messaging-components/issues/1184)) ([2fe1b15](https://github.com/paypal/paypal-messaging-components/commit/2fe1b15bb1a2587e4583a82cdf7afd88e3a5fe3b))
+
+
+### Code Refactoring
+
+* update v5 modal styles ([#1182](https://github.com/paypal/paypal-messaging-components/issues/1182)) ([881a239](https://github.com/paypal/paypal-messaging-components/commit/881a23925d9364841e79b1f91d1ca8c37098f0bb))
+
 ### [1.66.3](https://github.com/paypal/paypal-messaging-components/compare/v1.66.2...v1.66.3) (2025-03-12)
 
 
