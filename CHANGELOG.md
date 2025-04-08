@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.68.0](https://github.com/paypal/paypal-messaging-components/compare/v1.67.0...v1.68.0) (2025-04-08)
+
+
+### Features
+
+* adds prop update listening to modal browser zoid polyfill ([#1161](https://github.com/paypal/paypal-messaging-components/issues/1161)) ([86c001c](https://github.com/paypal/paypal-messaging-components/commit/86c001cce2feecfa4d44eb6a955e91b00ad6d898))
+
+
+### Bug Fixes
+
+* update product list tile headline font to 5.1 standard ([#1192](https://github.com/paypal/paypal-messaging-components/issues/1192)) ([06970de](https://github.com/paypal/paypal-messaging-components/commit/06970de1938f0c355f5dcbc497981a8863ee1439))
+
 ## [1.67.0](https://github.com/paypal/paypal-messaging-components/compare/v1.66.4...v1.67.0) (2025-04-01)
 
 
