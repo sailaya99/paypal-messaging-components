@@ -6,7 +6,6 @@ import {
     getActiveTags,
     ppDebug,
     createState,
-    parseObjFromEncoding,
     getRequestDuration,
     getTsCookieFromStorage,
     getOrCreateDeviceID
@@ -191,8 +190,9 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
                 request('GET', `${window.location.origin}/credit-presentment/smart/message?${query}`).then(
                     ({ data: resData }) => {
                         const jsonData = resData.slice(resData.indexOf('<!--') + 4, resData.indexOf('-->'));
-                        // TODO: Cleanup ternary and remove 'parseObjFromEncoding' from utils; only JSON.parse will be needed.
-                        const data = jsonData.startsWith('{') ? JSON.parse(jsonData) : parseObjFromEncoding(jsonData);
+
+                        const data = JSON.parse(jsonData);
+
                         button.innerHTML = data.markup ?? markup ?? '';
                         const buttonWidth = button.offsetWidth;
                         const buttonHeight = button.offsetHeight;

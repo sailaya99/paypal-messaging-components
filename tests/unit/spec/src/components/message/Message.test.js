@@ -1,7 +1,7 @@
 import { getByText, fireEvent, queryByText } from '@testing-library/dom';
 
 import Message from 'src/components/message/Message';
-import { request, createState, parseObjFromEncoding } from 'src/utils';
+import { request, createState } from 'src/utils';
 import xPropsMock from 'utils/xPropsMock';
 
 const ts = {
@@ -15,17 +15,10 @@ jest.mock('src/utils', () => ({
     getOrCreateDeviceID: jest.fn(() => 'uid_26a2522628_mtc6mjk6nti'),
     request: jest.fn(() =>
         Promise.resolve({
-            data: '<!--ewAiAG0AYQByAGsAdQBwACIAOgAiADwAZABpAHYAPgBtAG8AYwBrADwALwBkAGkAdgA+ACIALAAiAG0AZQB0AGEAIgA6AHsAIgBtAGUAcwBzAGEAZwBlAFIAZQBxAHUAZQBzAHQASQBkACIAOgAiADIAMwA0ADUANgAiAH0ALAAiAHAAYQByAGUAbgB0AFMAdAB5AGwAZQBzACIAOgAiAGIAbwBkAHkAIAB7ACAAYwBvAGwAbwByADoAIABiAGwAdQBlADsAIAB9ACIALAAiAHcAYQByAG4AaQBuAGcAcwAiADoAWwBdAH0A-->'
+            data: '<!--{"markup":"<div>mock</div>","meta":{"messageRequestId":"23456"},"parentStyles":"body { color: blue; }","warnings":[]}-->'
         })
     ),
-    parseObjFromEncoding: jest.fn(() => ({
-        markup: '<div>mock</div>',
-        meta: {
-            messageRequestId: '23456'
-        },
-        parentStyles: 'body { color: blue; }',
-        warnings: []
-    })),
+
     // eslint-disable-next-line no-console
     ppDebug: jest.fn(() => console.log('PayPal Debug Message')),
     getRequestDuration: jest.fn(() => 123)
@@ -63,7 +56,6 @@ describe('Message', () => {
         createState.mockClear();
         request.mockClear();
         xPropsMock.clear();
-        parseObjFromEncoding.mockClear();
     });
 
     test('Renders the button with styles', () => {
@@ -179,15 +171,5 @@ describe('Message', () => {
             requestDuration: 123,
             ts
         });
-    });
-
-    test('raw json data from request', async () => {
-        request.mockReturnValue(
-            Promise.resolve({
-                data: '<!--{"markup":"<div>json response</div>","meta":{"messageRequestId":"34567"}}-->'
-            })
-        );
-        Message(serverData);
-        expect(parseObjFromEncoding).not.toHaveBeenCalled();
     });
 });
