@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.68.1](https://github.com/paypal/paypal-messaging-components/compare/v1.68.0...v1.68.1) (2025-05-06)
+
+
+### Continuous Integration
+
+* failed snapshot comparison halts release ([#1166](https://github.com/paypal/paypal-messaging-components/issues/1166)) ([75bb39c](https://github.com/paypal/paypal-messaging-components/commit/75bb39ca014b1552000985f2ef18dc064e7d130f))
+
+
+### Code Refactoring
+
+* fix 5.1 product list tile border ([#1195](https://github.com/paypal/paypal-messaging-components/issues/1195)) ([553ba2c](https://github.com/paypal/paypal-messaging-components/commit/553ba2cef0d3573b7eb475fb110d4aa566ed2583))
+* update ternary condition and cleanup parseObj function ([#1169](https://github.com/paypal/paypal-messaging-components/issues/1169)) ([8e35890](https://github.com/paypal/paypal-messaging-components/commit/8e35890ddf65dcadfca5c9f577fffc260e36cd76))
+
 ## [1.68.0](https://github.com/paypal/paypal-messaging-components/compare/v1.67.0...v1.68.0) (2025-04-08)
 
 
