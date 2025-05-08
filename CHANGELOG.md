@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.68.2](https://github.com/paypal/paypal-messaging-components/compare/v1.68.1...v1.68.2) (2025-05-08)
+
+
+### Bug Fixes
+
+* move axe-core to dev dependency ([#1199](https://github.com/paypal/paypal-messaging-components/issues/1199)) ([7828cd6](https://github.com/paypal/paypal-messaging-components/commit/7828cd666f02b7d296b035eec8d666028b2fe5f9))
+
 ### [1.68.1](https://github.com/paypal/paypal-messaging-components/compare/v1.68.0...v1.68.1) (2025-05-06)
 
 
