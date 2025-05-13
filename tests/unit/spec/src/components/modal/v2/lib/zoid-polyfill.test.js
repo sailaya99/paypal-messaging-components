@@ -99,7 +99,7 @@ describe('zoidPollyfill', () => {
     describe('sets up xprops for browser', () => {
         beforeAll(() => {
             mockLoadUrl(
-                'https://localhost.paypal.com:8080/credit-presentment/lander/modal?client_id=client_1&logo_type=inline&amount=500&devTouchpoint=true'
+                'https://localhost.paypal.com:8080/credit-presentment/lander/modal?client_id=client_1&logo_type=inline&amount=500&devTouchpoint=true&integration_identifier=messagesModal'
             );
 
             zoidPolyfill();
@@ -122,7 +122,8 @@ describe('zoidPollyfill', () => {
                     clientId: 'client_1',
                     logoType: 'inline',
                     amount: '500',
-                    devTouchpoint: 'true'
+                    devTouchpoint: 'true',
+                    integrationIdentifier: 'messagesModal'
                 })
             );
         });
