@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.68.3](https://github.com/paypal/paypal-messaging-components/compare/v1.68.2...v1.68.3) (2025-05-13)
+
+
+### Code Refactoring
+
+* adds v6 modal tracking key integration_identifier ([#1196](https://github.com/paypal/paypal-messaging-components/issues/1196)) ([63d9691](https://github.com/paypal/paypal-messaging-components/commit/63d969132fd0fee66dc6b714677612221023487c))
+
 ### [1.68.2](https://github.com/paypal/paypal-messaging-components/compare/v1.68.1...v1.68.2) (2025-05-08)
 
 
