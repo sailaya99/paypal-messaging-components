@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.69.0](https://github.com/paypal/paypal-messaging-components/compare/v1.68.3...v1.69.0) (2025-05-27)
+
+
+### Features
+
+* add new 3mo campaign msg ([#1202](https://github.com/paypal/paypal-messaging-components/issues/1202)) ([8e5a1b0](https://github.com/paypal/paypal-messaging-components/commit/8e5a1b09c4b1ee837eb18c30bbb2859b0e209f42))
+
+
+### Code Refactoring
+
+* au reg update ([#1198](https://github.com/paypal/paypal-messaging-components/issues/1198)) ([dd4d851](https://github.com/paypal/paypal-messaging-components/commit/dd4d851e69143e47d4ac506ff33011bd37e7bafe))
+
 ### [1.68.3](https://github.com/paypal/paypal-messaging-components/compare/v1.68.2...v1.68.3) (2025-05-13)
 
 
