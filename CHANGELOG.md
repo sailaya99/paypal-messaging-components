@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.69.1](https://github.com/paypal/paypal-messaging-components/compare/v1.69.0...v1.69.1) (2025-06-09)
+
+
+### Bug Fixes
+
+* add validation ([#1205](https://github.com/paypal/paypal-messaging-components/issues/1205)) ([a2bbf9e](https://github.com/paypal/paypal-messaging-components/commit/a2bbf9eaf289eb83af813191c1cbe0235b14d91d))
+
 ## [1.69.0](https://github.com/paypal/paypal-messaging-components/compare/v1.68.3...v1.69.0) (2025-05-27)
 
 
