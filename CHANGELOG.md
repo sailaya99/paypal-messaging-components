@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.69.2](https://github.com/paypal/paypal-messaging-components/compare/v1.69.1...v1.69.2) (2025-06-25)
+
+
+### Code Refactoring
+
+* update XO modal designs to 5.2 ([#1194](https://github.com/paypal/paypal-messaging-components/issues/1194)) ([24d097c](https://github.com/paypal/paypal-messaging-components/commit/24d097c96fd2eec4bf0c56a72971783bfc63b908))
+
 ### [1.69.1](https://github.com/paypal/paypal-messaging-components/compare/v1.69.0...v1.69.1) (2025-06-09)
 
 
