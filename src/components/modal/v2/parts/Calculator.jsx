@@ -69,6 +69,7 @@ const Calculator = ({
     setExpandedState,
     calculator,
     aprDisclaimer,
+    cta,
     useV4Design,
     useV5Design,
     use5Dot1Design,
@@ -194,7 +195,7 @@ const Calculator = ({
         <div
             className={`calculator ${useNewCheckoutDesign === 'true' ? 'checkout' : ''} ${
                 useV5Design === 'true' ? 'v5Design' : ''
-            }`}
+            } ${cta ? 'border-checkout' : ''}`}
         >
             <form
                 className={`form ${useV4Design === 'true' ? 'v4Design' : ''} ${
@@ -202,8 +203,14 @@ const Calculator = ({
                 } ${useNewCheckoutDesign === 'true' ? 'checkout' : ''}`}
                 onSubmit={submit}
             >
-                <h3 className="title">{!hasInitialAmount ? genericTitle || title : title}</h3>
-                <div className={`input__wrapper transitional ${useV5Design === 'true' ? 'v5Design' : ''}`}>
+                <h3 className={`title ${cta ? 'checkout-title' : ''}`}>
+                    {!hasInitialAmount ? genericTitle || title : title}
+                </h3>
+                <div
+                    className={`input__wrapper transitional ${useV5Design === 'true' ? 'v5Design' : ''} ${
+                        cta ? 'checkout' : ''
+                    }`}
+                >
                     <label htmlFor="purchase-amount" className={`input__label ${country}`}>
                         {renderInputLabelOnEmptyField(country)}
                     </label>

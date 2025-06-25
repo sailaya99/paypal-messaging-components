@@ -11,14 +11,13 @@ strong {
 
         &:not(:last-child)::after {
             content: '';
-            border-bottom: 0.5px solid $offer-border-gray;
+            border-bottom: 1px solid $offer-border-gray;
             display: block;
             margin-top: 20px;
             margin-bottom: 20px;
 
             .checkout & {
                 margin-top: 15px;
-                border-bottom: 1px solid $dark-gray;
             }
 
             @include mobile {
@@ -31,14 +30,8 @@ strong {
             &:last-child {
                 margin-bottom: 0px;
             }
-            &:last-child::after {
-                content: '';
-                border-bottom: 0.5px solid $offer-border-gray;
-                display: block;
-                margin-top: 20px;
-            }
         }
-        
+
         @include desktop {
             &:last-child {
                 margin-bottom: 20px;
@@ -57,7 +50,7 @@ strong {
                 margin-bottom: 20px;
 
                 .checkout & {
-                    margin-bottom: 32px;
+                    margin-bottom: 15px;
                 }
             }
         }
@@ -67,7 +60,7 @@ strong {
                 margin-bottom: 20px;
 
                 .checkout & {
-                    margin-bottom: 32px;
+                    margin-bottom: 15px;
                 }
             }
         }
@@ -83,15 +76,10 @@ strong {
             &:first-child {
                 padding-bottom: 10px;
             }
-        }
 
-        &.v5Design strong {
-            color: #000000;
-            font-weight: 400;
-        }
-
-        .checkout & {
-            justify-content: flex-start;
+            .checkout & {
+                font-weight: bold;
+            }
         }
     }
     &__field-header {
@@ -121,12 +109,6 @@ strong {
         &:not(:last-child) {
             flex-grow: 1;
         }
-
-        .v4Design,
-        .checkout {
-            color: $dark-gray;
-            font-weight: 400;
-        }
     }
 
     &__field-title {
@@ -142,18 +124,15 @@ strong {
             color: $text-main;
         }
 
-        &.v5Design {
-            color: $v5-gray !important;
-            padding-bottom: 6px;
-        }
-
         &.v5Dot1Design {
             color: $text-main !important;
             font-weight: bold !important;
         }
-
         .checkout & {
-            font-size: 14px;
+            font-size: 16px;
+            & :last-of-type {
+                color: $text-main !important;
+            }
         }
     }
 
@@ -172,18 +151,13 @@ strong {
             color: $text-main;
         }
 
-        .v5Design & {
-            color: $v5-gray
-        }
-
         &.v5Dot1Design {
             color: $text-main !important;
             font-weight: bold !important;
         }
-        
+
         .checkout & {
             font-size: 16px;
-            color: $text-main;
         }
     }
 }
