@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.69.3](https://github.com/paypal/paypal-messaging-components/compare/v1.69.2...v1.69.3) (2025-07-07)
+
+
+### Code Refactoring
+
+* ppcc modal edits ([#1209](https://github.com/paypal/paypal-messaging-components/issues/1209)) ([bd72241](https://github.com/paypal/paypal-messaging-components/commit/bd72241329afc96a113b11327785e74b5480eecc))
+
 ### [1.69.2](https://github.com/paypal/paypal-messaging-components/compare/v1.69.1...v1.69.2) (2025-06-25)
 
 
