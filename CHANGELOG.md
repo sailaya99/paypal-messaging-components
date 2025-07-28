@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.70.0](https://github.com/paypal/paypal-messaging-components/compare/v1.69.3...v1.70.0) (2025-07-28)
+
+
+### Features
+
+* Update our Automated Accessibility testing to be compliant for levels to (WCAG) 2.2 Levels A and AA ([#1213](https://github.com/paypal/paypal-messaging-components/issues/1213)) ([cfbbc61](https://github.com/paypal/paypal-messaging-components/commit/cfbbc6102c302129938ea6c248ba4566ad92efc1))
+
+
+### Code Refactoring
+
+* allow inline links in Pay in 30 modal and update legal disclosure ([#1212](https://github.com/paypal/paypal-messaging-components/issues/1212)) ([f741a36](https://github.com/paypal/paypal-messaging-components/commit/f741a36739aceb2d0a32267cc6f9a621377cf2b2))
+
 ### [1.69.3](https://github.com/paypal/paypal-messaging-components/compare/v1.69.2...v1.69.3) (2025-07-07)
 
 
