@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.71.0](https://github.com/paypal/paypal-messaging-components/compare/v1.70.0...v1.71.0) (2025-09-02)
+
+
+### Features
+
+* Implements Global Session ID ([#1217](https://github.com/paypal/paypal-messaging-components/issues/1217)) ([af2d6e1](https://github.com/paypal/paypal-messaging-components/commit/af2d6e12ebe4764186473d40db73a6533d9ce388))
+
 ## [1.70.0](https://github.com/paypal/paypal-messaging-components/compare/v1.69.3...v1.70.0) (2025-07-28)
 
 
