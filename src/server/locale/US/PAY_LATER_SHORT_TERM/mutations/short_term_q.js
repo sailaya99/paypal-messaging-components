@@ -8,7 +8,11 @@ import {
     logo20x1,
     addPeriod
 } from '../../../../message/mediaQueries';
-import { flexLogoMutations, textLogoMutations } from '../../../../message/logoMutations';
+import {
+    flexLogoMutations as defaultFlexLogoMutations,
+    textLogoMutations as defaultTextLogoMutations
+} from '../../../../message/logoMutations';
+import { flexLogoMutations as customFlexLogoMutations, textLogoMutations as customTextLogoMutations } from '../logos';
 
 const flex = [
     [
@@ -59,7 +63,7 @@ const flex = [
         }
     ],
     ['color:white-no-border', { logo: Logo.PP_PAYPAL.COLOR }],
-    ...flexLogoMutations
+    ...(customFlexLogoMutations || defaultFlexLogoMutations)
 ];
 
 export default {
@@ -170,6 +174,6 @@ export default {
                 ]
             })
         ],
-        ...textLogoMutations
+        ...(customTextLogoMutations || defaultTextLogoMutations)
     ]
 };

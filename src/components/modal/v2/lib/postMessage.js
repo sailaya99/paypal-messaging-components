@@ -40,7 +40,9 @@ function createSafePayload(unscreenedPayload) {
             const [key, value] = entry;
             if (allowedFields.includes(key)) {
                 safePayload[key] = value;
-            } else {
+            } else if (process.env.NODE_ENV !== 'production') {
+                // Payload key not in allowlist - only log in development, not production
+                // eslint-disable-next-line no-console
                 console.warn(`modal hook payload param should be allowlisted if secure: ${key}`);
             }
         });

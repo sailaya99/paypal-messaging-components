@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 
 module.exports = (env = {}) => {
     const WEBPACK_DEV_SERVER_CONFIG = {
-        contentBase: './demo',
+        contentBase: ['./demo', './public'],
         publicPath: '/',
         // set and export DEV_BROWSER in Terminal config to open that specific browser
         // otherwise opens default browser if not set
