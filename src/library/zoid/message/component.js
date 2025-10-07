@@ -14,7 +14,6 @@ import {
     getLibraryVersion,
     runStats,
     logger,
-    getOrCreateGlobalSessionID,
     getSessionID,
     getGlobalState,
     getCurrentTime,
@@ -221,7 +220,7 @@ export default createGlobalVariableGetter('__paypal_credit_message__', () =>
                 queryParam: false,
                 value: ({ props }) => {
                     const { onReady } = props;
-                    return ({ meta, activeTags, ts, requestDuration, messageRequestId }) => {
+                    return ({ meta, activeTags, ts, requestDuration, messageRequestId, globalSessionID }) => {
                         const { account, merchantId, index, modal, getContainer, pageType } = props;
                         const { trackingDetails, offerType, ppDebugId } = meta;
                         const partnerClientId = merchantId && account.slice(10); // slice is to remove the characters 'client-id:' from account name
@@ -257,10 +256,9 @@ export default createGlobalVariableGetter('__paypal_credit_message__', () =>
                                     // deviceID from internal iframe storage
                                     // should be populated previously by the treatments component
                                     deviceID: getOrCreateDeviceID(),
-                                    // Global Session ID allows messages to be correlated to button events
-                                    globalSessionID: getOrCreateGlobalSessionID(),
                                     // Session ID from parent local storage,
-                                    sessionID: getSessionID()
+                                    sessionID: getSessionID(),
+                                    globalSessionID
                                 },
                                 [index]: {
                                     type: 'message',
