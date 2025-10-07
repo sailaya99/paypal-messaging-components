@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.74.0](https://github.com/paypal/paypal-messaging-components/compare/v1.73.0...v1.74.0) (2025-10-07)
+
+
+### Features
+
+* add Chevrons for ITES Accordion (DTCRCMERC-4435) ([#1235](https://github.com/paypal/paypal-messaging-components/issues/1235)) ([33a4f11](https://github.com/paypal/paypal-messaging-components/commit/33a4f11db4c680babf8e38fd4f40fd97cf8c5ab5))
+* CA pi4 message formatting and modal update ([#1233](https://github.com/paypal/paypal-messaging-components/issues/1233)) ([103f5f3](https://github.com/paypal/paypal-messaging-components/commit/103f5f3a016c2bbd1bfa5f0734b80c7d6ebb2876))
+
+
+### Bug Fixes
+
+* update modal styles ([#1237](https://github.com/paypal/paypal-messaging-components/issues/1237)) ([a9cb19c](https://github.com/paypal/paypal-messaging-components/commit/a9cb19c653c71d0d589c53250fbe48466d2c8e7a))
+
+
+### Code Refactoring
+
+* update ITES LT ([#1234](https://github.com/paypal/paypal-messaging-components/issues/1234)) ([9477a3f](https://github.com/paypal/paypal-messaging-components/commit/9477a3f36615ec3bcb0ba23768a6d065ace3ce9d))
+* use new SDK method for global identifier ([#1236](https://github.com/paypal/paypal-messaging-components/issues/1236)) ([62d3dc4](https://github.com/paypal/paypal-messaging-components/commit/62d3dc4ba4a31a8185033899fac75551eb1f88e3))
+
 ## [1.73.0](https://github.com/paypal/paypal-messaging-components/compare/v1.72.0...v1.73.0) (2025-09-30)
 
 
