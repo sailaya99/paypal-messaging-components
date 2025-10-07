@@ -73,7 +73,7 @@ export default {
                 headline: [
                     {
                         tag: 'medium',
-                        br: ['of']
+                        br: ['for', 'pour']
                     },
                     { tag: 'xsmall' }
                 ],
@@ -124,12 +124,18 @@ export default {
                 headline: [
                     {
                         tag: 'medium',
-                        br: ['on'],
-                        replace: [['00.', '00']]
+                        br: ['for', 'pour'],
+                        replace: [
+                            ['00.', '00'],
+                            ['00 $.', '00 $']
+                        ]
                     },
                     {
                         tag: 'xsmall.2',
-                        replace: [['later.', 'later']]
+                        replace: [
+                            ['later.', 'later'],
+                            ['tard.', 'tard']
+                        ]
                     }
                 ]
             })
@@ -143,11 +149,17 @@ export default {
                     {
                         tag: 'medium',
                         br: ['on'],
-                        replace: [['00.', '00']]
+                        replace: [
+                            ['00.', '00'],
+                            ['00 $.', '00 $']
+                        ]
                     },
                     {
                         tag: 'xsmall.2',
-                        replace: [['later.', 'later']]
+                        replace: [
+                            ['later.', 'later'],
+                            ['tard.', 'tard']
+                        ]
                     }
                 ]
             })
