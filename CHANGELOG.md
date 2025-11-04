@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.75.0](https://github.com/paypal/paypal-messaging-components/compare/v1.74.0...v1.75.0) (2025-11-04)
+
+
+### Features
+
+* add sdk log auth header ([#1175](https://github.com/paypal/paypal-messaging-components/issues/1175)) ([47baea4](https://github.com/paypal/paypal-messaging-components/commit/47baea404b14cf5e7afc6f3d2ecfae01bd182e6d))
+* adds risk-based APR US message types and content ([#1240](https://github.com/paypal/paypal-messaging-components/issues/1240)) ([b926b46](https://github.com/paypal/paypal-messaging-components/commit/b926b46c7894f2b79e4e3ef744ffa2972bf5eb7e))
+* adds risk-based APR US modals content ([#1243](https://github.com/paypal/paypal-messaging-components/issues/1243)) ([0a95422](https://github.com/paypal/paypal-messaging-components/commit/0a95422f353e3aa52e7b6be5d864ed1aea55e1a0))
+
+
+### Bug Fixes
+
+* FRIT ST disclosure ([17b7c71](https://github.com/paypal/paypal-messaging-components/commit/17b7c710c05f84317e57c2ec3abe8ced6e254ae2))
+
+
+### Documentation
+
+* Update ActionsHowTo.md and publish.yml for npm Trusted Publishing setup ([#1241](https://github.com/paypal/paypal-messaging-components/issues/1241)) ([eced3a2](https://github.com/paypal/paypal-messaging-components/commit/eced3a24718a8060449d1432c3413233df4783b9))
+
+
+### Code Refactoring
+
+* update ppc nq ([#1211](https://github.com/paypal/paypal-messaging-components/issues/1211)) ([d1bffe7](https://github.com/paypal/paypal-messaging-components/commit/d1bffe76eeff44a38d82b4d420b1a9be74406ac0))
+* update ppcc uri ([#1244](https://github.com/paypal/paypal-messaging-components/issues/1244)) ([0bd7fd1](https://github.com/paypal/paypal-messaging-components/commit/0bd7fd145684d3d24fb14a1334fafd489f4c9a63))
+
 ## [1.74.0](https://github.com/paypal/paypal-messaging-components/compare/v1.73.0...v1.74.0) (2025-10-07)
 
 
