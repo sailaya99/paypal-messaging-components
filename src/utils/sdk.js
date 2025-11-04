@@ -72,6 +72,15 @@ export function getAccount() {
         return undefined;
     }
 }
+
+export function getClientId() {
+    if (__MESSAGES__.__TARGET__ === 'SDK') {
+        return getClientID();
+    } else {
+        return undefined;
+    }
+}
+
 export function getPageType() {
     if (__MESSAGES__.__TARGET__ === 'SDK') {
         return getSDKPageType();

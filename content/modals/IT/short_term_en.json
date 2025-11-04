@@ -46,15 +46,11 @@
             "The remaining payments will be taken automatically. It's easy! "
         ],
         "disclosure": [
-            [
-                "Only available on eligible purchases from {formattedMinAmount} to {formattedMaxAmount}. You must be a resident of Italy and have a PayPal account. <strong>0% APR</strong>. Eligibility for Pay in 3 installments is subject to approval. See the "
-            ],
+            "Only available on eligible purchases from {formattedMinAmount} to {formattedMaxAmount}. You must be a resident of Italy and have a PayPal account. <strong>0% APR</strong>. Eligibility for Pay in 3 installments is subject to approval. See the ",
             ["information sheet", "https://www.paypal.com/it/webapps/mpp/ua/pay-in-3-infosheet-full?locale.x=it_IT"],
-            [" and "],
+            " and ",
             ["terms and conditions", "https://www.paypal.com/it/webapps/mpp/ua/pay-in-3-full?locale.x=it_IT"],
-            [
-                " for more information. Available only to individual customers who are over 18 years of age. You have a 14-day period to withdraw from the financing. The creditor is PayPal (Europe) S.à rl et Cie, SCA, 22-24 Boulevard Royal, L-2449 Luxembourg. Financing is a binding commitment that must be repaid. Ensure you are able to repay before making a commitment. This information is provided by PayPal."
-            ]
+            " for more information. Available only to individual customers who are over 18 years of age. You have a 14-day period to withdraw from the financing. The creditor is PayPal (Europe) S.à rl et Cie, SCA, 22-24 Boulevard Royal, L-2449 Luxembourg. Financing is a binding commitment that must be repaid. Ensure you are able to repay before making a commitment. This information is provided by PayPal."
         ],
         "linkToProductList": "See other ways to pay in installments"
     }

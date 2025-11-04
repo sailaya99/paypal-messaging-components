@@ -3,7 +3,7 @@
         "id": "d8dbfe8b-0bb8-44b1-ae07-6f32816fafe6",
         "offerCountry": "US",
         "offerType": "PAY_LATER_LONG_TERM",
-        "messageType": "PLLT_SQ_EZ_RB",
+        "messageType": "PLLT_MQ_EZ_RB",
         "offerTerm": "${CREDIT_OFFERS_DS.total_payments}",
         "lander": "https://www.paypal.com/ppclander",
         "variables": {
@@ -22,7 +22,7 @@
         ["Buy now and pay later.", ["xsmall.2"]],
         [
             [
-                "${total_payments} payments of ${formattedMonthlyPayment}/<span aria-hidden='true'>mo</span><span class='sr-only'>month</span> for as low as 0% APR."
+                "Starting at ${formattedMonthlyPayment}/<span aria-hidden='true'>mo</span><span class='sr-only'>month</span> or as low as 0% APR."
             ],
             ["small", "medium", "large", "xlarge"]
         ]
