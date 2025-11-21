@@ -14,6 +14,7 @@ import {
     getCSPNonce,
     getNamespace as getSDKNamespace,
     getDefaultNamespace as getDefaultSDKNamespace,
+    getPayPalSessionID as getSDKGlobalSessionID,
     getSessionID as getSDKSessionID,
     getStorageID as getSDKStorageID,
     getStorageState as getSDKStorageState,
@@ -52,9 +53,11 @@ export function getMerchantConfig() {
     if (__MESSAGES__.__TARGET__ === 'SDK') {
         // TODO: remove getFundingEligibility call and try catch after globals swap
         try {
-            return __MESSAGING_GLOBALS__?.merchantProfile?.hash;
+            const hash = __MESSAGING_GLOBALS__?.merchantProfile?.hash;
+            return hash || undefined;
         } catch {
-            return getFundingEligibility()?.paylater?.merchantConfigHash;
+            const hash = getFundingEligibility()?.paylater?.merchantConfigHash;
+            return hash || undefined;
         }
     } else {
         return undefined;
@@ -69,6 +72,15 @@ export function getAccount() {
         return undefined;
     }
 }
+
+export function getClientId() {
+    if (__MESSAGES__.__TARGET__ === 'SDK') {
+        return getClientID();
+    } else {
+        return undefined;
+    }
+}
+
 export function getPageType() {
     if (__MESSAGES__.__TARGET__ === 'SDK') {
         return getSDKPageType();
@@ -159,6 +171,17 @@ export function isZoidComponent() {
 
 export function getStorage() {
     return getBelterStorage({ name: getNamespace() });
+}
+
+// Uses SDK methods to get a global session ID
+// value will be passed in message_render events
+// and used to correlate with button events
+export function getGlobalSessionID() {
+    if (__MESSAGES__.__TARGET__ === 'SDK') {
+        return getSDKGlobalSessionID();
+    } else {
+        return getStorage().getSessionID();
+    }
 }
 
 // Use SDK methods when available, otherwise manually fetch storage via belter

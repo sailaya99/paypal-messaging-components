@@ -1,5 +1,76 @@
 # Changelog
 
+## [1.75.0](https://github.com/paypal/paypal-messaging-components/compare/v1.74.0...v1.75.0) (2025-11-04)
+
+
+### Features
+
+* add sdk log auth header ([#1175](https://github.com/paypal/paypal-messaging-components/issues/1175)) ([47baea4](https://github.com/paypal/paypal-messaging-components/commit/47baea404b14cf5e7afc6f3d2ecfae01bd182e6d))
+* adds risk-based APR US message types and content ([#1240](https://github.com/paypal/paypal-messaging-components/issues/1240)) ([b926b46](https://github.com/paypal/paypal-messaging-components/commit/b926b46c7894f2b79e4e3ef744ffa2972bf5eb7e))
+* adds risk-based APR US modals content ([#1243](https://github.com/paypal/paypal-messaging-components/issues/1243)) ([0a95422](https://github.com/paypal/paypal-messaging-components/commit/0a95422f353e3aa52e7b6be5d864ed1aea55e1a0))
+
+
+### Bug Fixes
+
+* FRIT ST disclosure ([17b7c71](https://github.com/paypal/paypal-messaging-components/commit/17b7c710c05f84317e57c2ec3abe8ced6e254ae2))
+
+
+### Documentation
+
+* Update ActionsHowTo.md and publish.yml for npm Trusted Publishing setup ([#1241](https://github.com/paypal/paypal-messaging-components/issues/1241)) ([eced3a2](https://github.com/paypal/paypal-messaging-components/commit/eced3a24718a8060449d1432c3413233df4783b9))
+
+
+### Code Refactoring
+
+* update ppc nq ([#1211](https://github.com/paypal/paypal-messaging-components/issues/1211)) ([d1bffe7](https://github.com/paypal/paypal-messaging-components/commit/d1bffe76eeff44a38d82b4d420b1a9be74406ac0))
+* update ppcc uri ([#1244](https://github.com/paypal/paypal-messaging-components/issues/1244)) ([0bd7fd1](https://github.com/paypal/paypal-messaging-components/commit/0bd7fd145684d3d24fb14a1334fafd489f4c9a63))
+
+## [1.74.0](https://github.com/paypal/paypal-messaging-components/compare/v1.73.0...v1.74.0) (2025-10-07)
+
+
+### Features
+
+* add Chevrons for ITES Accordion (DTCRCMERC-4435) ([#1235](https://github.com/paypal/paypal-messaging-components/issues/1235)) ([33a4f11](https://github.com/paypal/paypal-messaging-components/commit/33a4f11db4c680babf8e38fd4f40fd97cf8c5ab5))
+* CA pi4 message formatting and modal update ([#1233](https://github.com/paypal/paypal-messaging-components/issues/1233)) ([103f5f3](https://github.com/paypal/paypal-messaging-components/commit/103f5f3a016c2bbd1bfa5f0734b80c7d6ebb2876))
+
+
+### Bug Fixes
+
+* update modal styles ([#1237](https://github.com/paypal/paypal-messaging-components/issues/1237)) ([a9cb19c](https://github.com/paypal/paypal-messaging-components/commit/a9cb19c653c71d0d589c53250fbe48466d2c8e7a))
+
+
+### Code Refactoring
+
+* update ITES LT ([#1234](https://github.com/paypal/paypal-messaging-components/issues/1234)) ([9477a3f](https://github.com/paypal/paypal-messaging-components/commit/9477a3f36615ec3bcb0ba23768a6d065ace3ce9d))
+* use new SDK method for global identifier ([#1236](https://github.com/paypal/paypal-messaging-components/issues/1236)) ([62d3dc4](https://github.com/paypal/paypal-messaging-components/commit/62d3dc4ba4a31a8185033899fac75551eb1f88e3))
+
+## [1.73.0](https://github.com/paypal/paypal-messaging-components/compare/v1.72.0...v1.73.0) (2025-09-30)
+
+
+### Features
+
+* create ITES LT messages and modals ([#1221](https://github.com/paypal/paypal-messaging-components/issues/1221)) ([4dc7365](https://github.com/paypal/paypal-messaging-components/commit/4dc73659b66bfbb6fb24f027fcddd40f396596af))
+
+
+### Code Refactoring
+
+* improve hash retrieval in getMerchantConfig function ([#1228](https://github.com/paypal/paypal-messaging-components/issues/1228)) ([e436a11](https://github.com/paypal/paypal-messaging-components/commit/e436a11d08dbff88f696c6dee0a28dfb19372072))
+* US modal legal disclosure updates ([#1231](https://github.com/paypal/paypal-messaging-components/issues/1231)) ([99e9be8](https://github.com/paypal/paypal-messaging-components/commit/99e9be8c2d5fbe2c2a4984844ddc7dcbf9850a2c))
+
+## [1.72.0](https://github.com/paypal/paypal-messaging-components/compare/v1.71.0...v1.72.0) (2025-09-23)
+
+
+### Features
+
+* create ca pi4 msgs and modals ([#1220](https://github.com/paypal/paypal-messaging-components/issues/1220)) ([0623927](https://github.com/paypal/paypal-messaging-components/commit/0623927be7ac9c8b76c27ed9dd6b4a7a5a1a4897))
+
+## [1.71.0](https://github.com/paypal/paypal-messaging-components/compare/v1.70.0...v1.71.0) (2025-09-02)
+
+
+### Features
+
+* Implements Global Session ID ([#1217](https://github.com/paypal/paypal-messaging-components/issues/1217)) ([af2d6e1](https://github.com/paypal/paypal-messaging-components/commit/af2d6e12ebe4764186473d40db73a6533d9ce388))
+
 ## [1.70.0](https://github.com/paypal/paypal-messaging-components/compare/v1.69.3...v1.70.0) (2025-07-28)
 
 

@@ -8,10 +8,10 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { getGlobalUrl } from './global';
 import { request } from './miscellaneous';
 
-import { getLibraryVersion, getDisableSetCookie } from './sdk';
+import { getLibraryVersion, getDisableSetCookie, getClientId } from './sdk';
 
 function generateLogPayload(account, { meta, events: bizEvents, tracking }) {
-    const { deviceID, sessionID, integration_type, messaging_version } = meta.global ?? {};
+    const { deviceID, sessionID, integration_type, messaging_version, globalSessionID } = meta.global ?? {};
 
     let clientID;
     if (account.startsWith('client-id:')) {
@@ -98,6 +98,7 @@ function generateLogPayload(account, { meta, events: bizEvents, tracking }) {
 
             // Global Details
             device_id: deviceID,
+            global_session_id: globalSessionID,
             session_id: sessionID,
             integration_type,
             integration_version: messaging_version,
@@ -172,6 +173,18 @@ export const logger = Logger({
         const urlWithCookieParams = getDisableSetCookie()
             ? `${url}?disableSetCookie=true&features=disable-set-cookie`
             : url;
+
+        // Send authorization header with tracking event
+        if (__MESSAGES__.__TARGET__ === 'SDK') {
+            const encodedClientId = btoa(getClientId());
+            // eslint-disable-next-line no-param-reassign
+            headers.Authorization = `Basic ${encodedClientId}`;
+        }
+        if (__MESSAGES__.__TARGET__ === 'STANDALONE' || __MESSAGES__.__TARGET__ === 'STANDALONE_MODAL') {
+            const encodedPayerId = btoa(trimmedMeta['1'].account);
+            // eslint-disable-next-line no-param-reassign
+            headers.Authorization = `Basic ${encodedPayerId}`;
+        }
 
         return ZalgoPromise.all(
             translateLogData(trimmedLog).map(data => {

@@ -39,6 +39,10 @@ export default {
     DEVBTNLTSQGTZ: ['US', ['v2_long_term'], 'buttons/long_term_single_gtz'],
     // Buttons LT SQ EQZ
     DEVBTNLTSQEQZ: ['US', ['v2_long_term'], 'buttons/long_term_single_eqz'],
+    // Buttons LT SQ RB
+    DEVBTNLTSQERB: ['US', ['v2_long_term'], 'buttons/long_term_single_eqz_mixed'],
+    // Buttons LT MQ RB
+    DEVBTNLTMQERB: ['US', ['v2_long_term'], 'buttons/long_term_multi_eqz_mixed'],
     // Buttons ST NQ
     DEV00BTNSTSNQ: ['US', ['v2_short_term'], 'buttons/short_term_nq'],
     // Buttons ST Q
@@ -65,6 +69,10 @@ export default {
     DEVMRKLTSQGTZ: ['US', ['v2_long_term'], 'marks/long_term_single_gtz'],
     // Marks LT SQ EQZ
     DEVMRKLTSQEQZ: ['US', ['v2_long_term'], 'marks/long_term_single_eqz'],
+    // Marks LT SQ RB
+    DEVMRKLTSQERB: ['US', ['v2_long_term'], 'marks/long_term_single_eqz_mixed'],
+    // Marks LT MQ RB
+    DEVMRKLTMQERB: ['US', ['v2_long_term'], 'marks/long_term_multi_eqz_mixed'],
     // Marks ST NQ
     DEV00MRKSTSNQ: ['US', ['v2_short_term'], 'marks/short_term_nq'],
     // Marks ST Q
@@ -105,8 +113,21 @@ export default {
     DEV0000ESPLNA: ['ES', ['short_term'], 'short_term_no_amount'],
     DEV00000ESPLQ: ['ES', ['short_term'], 'short_term_q'],
     DEV0000ESPLNQ: ['ES', ['short_term'], 'short_term_nq'],
+    DEV0000ESPLTQ: ['ES', ['long_term'], 'long_term_q'],
+    DEV000ESPLTNQ: ['ES', ['long_term'], 'long_term_nq'],
 
     DEV0000ITPLNA: ['IT', ['short_term'], 'short_term_no_amount'],
     DEV00000ITPLQ: ['IT', ['short_term'], 'short_term_q'],
-    DEV0000ITPLNQ: ['IT', ['short_term'], 'short_term_nq']
+    DEV0000ITPLNQ: ['IT', ['short_term'], 'short_term_nq'],
+    DEV0000ITPLTQ: ['IT', ['long_term'], 'long_term_q'],
+    DEV000ITPLTNQ: ['IT', ['long_term'], 'long_term_nq'],
+
+    // en-CA
+    DEV00ENCAPLNA: ['CA', ['short_term'], 'generic'],
+    DEV000ENCAPLQ: ['CA', ['short_term'], 'short_term_q'],
+    DEV00ENCAPLNQ: ['CA', ['short_term'], 'short_term_nq'],
+    // fr-CA
+    DEV00FRCAPLNA: ['CA', ['short_term_fr'], 'generic_fr'],
+    DEV000FRCAPLQ: ['CA', ['short_term_fr'], 'short_term_q_fr'],
+    DEV00FRCAPLNQ: ['CA', ['short_term_fr'], 'short_term_nq_fr']
 };

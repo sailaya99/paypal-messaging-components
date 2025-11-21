@@ -8,7 +8,8 @@ import {
     createState,
     getRequestDuration,
     getTsCookieFromStorage,
-    getOrCreateDeviceID
+    getOrCreateDeviceID,
+    getGlobalSessionID
 } from '../../utils';
 
 const Message = function ({ markup, meta, parentStyles, warnings }) {
@@ -20,6 +21,7 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
         amount: window.xprops.amount ?? null,
         currency: window.xprops.currency ?? null,
         buyerCountry: window.xprops.buyerCountry ?? null,
+        language: window.xprops.language ?? null,
         ignoreCache: window.xprops.ignoreCache ?? null,
         style: window.xprops.style,
         offer: window.xprops.offer ?? null,
@@ -80,7 +82,8 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
         // getRequestDuration runs in the child component (iframe/banner message),
         // passing a value to onReady and up to the parent component to go out with
         // the other stats
-        requestDuration: getRequestDuration()
+        requestDuration: getRequestDuration(),
+        globalSessionID: getGlobalSessionID()
     });
 
     onMarkup({
@@ -115,6 +118,7 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
                     amount,
                     currency,
                     buyerCountry,
+                    language,
                     ignoreCache,
                     offer,
                     payerId,
@@ -137,6 +141,7 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
                     amount,
                     currency,
                     buyerCountry,
+                    language,
                     ignoreCache,
                     style,
                     offer,
@@ -159,6 +164,7 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
                     amount,
                     currency,
                     buyer_country: buyerCountry,
+                    language,
                     ignore_cache: ignoreCache,
                     style,
                     credit_type: offer,
@@ -220,7 +226,8 @@ const Message = function ({ markup, meta, parentStyles, warnings }) {
                                 // getRequestDuration runs in the child component (iframe/banner message),
                                 // passing a value to onReady and up to the parent component to go out with
                                 // the other stats
-                                requestDuration: getRequestDuration()
+                                requestDuration: getRequestDuration(),
+                                globalSessionID: getGlobalSessionID()
                             });
                         }
 
