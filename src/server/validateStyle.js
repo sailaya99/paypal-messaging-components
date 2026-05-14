@@ -5,7 +5,7 @@ import { validateType, Types } from './types';
 const logInvalid = (addLog, location, message) => addLog(`Invalid option value (${location}). ${message}`);
 const logInvalidType = (addLog, location, expectedType, val) =>
     logInvalid(addLog, location, `Expected type "${expectedType.toLowerCase()}" but instead received "${typeof val}".`);
-const logInvalidOption = (addLog, location, options, val) =>
+export const logInvalidOption = (addLog, location, options, val) =>
     logInvalid(
         addLog,
         location,
@@ -15,7 +15,7 @@ const logInvalidOption = (addLog, location, options, val) =>
         }".`
     );
 
-function getValidVal(addLog, typeArr, val, location) {
+export function getValidVal(addLog, typeArr, val, location) {
     const [type, validVals = []] = typeArr;
 
     if (val === undefined) {
@@ -72,7 +72,7 @@ function getValidVal(addLog, typeArr, val, location) {
  * @param {String} prefix Keep track of property location. Used for logging.
  * @returns {Object} Object with user style options or default values if missing
  */
-function populateDefaults(addLog, defaults, options, prefix = 'style.') {
+export function populateDefaults(addLog, defaults, options, prefix = 'style.') {
     return Object.entries(defaults).reduce((accumulator, [key, val]) => {
         if (Array.isArray(val)) {
             const validVal = getValidVal(addLog, val, options[key], `${prefix}${key}`);
@@ -98,13 +98,11 @@ function populateDefaults(addLog, defaults, options, prefix = 'style.') {
  * @param {Object} options User style options
  * @returns {Object} Object containing only valid style options
  */
-function getValidStyleOptions(addLog, localeStyleOptions, options) {
-    const defaultValues = {
+export function buildValidStyle(addLog, layoutOptions, options) {
+    return {
         layout: options.layout,
-        ...populateDefaults(addLog, localeStyleOptions[options.layout], options)
+        ...populateDefaults(addLog, layoutOptions[options.layout], options)
     };
-
-    return defaultValues;
 }
 
 /**
@@ -117,13 +115,11 @@ export default (addLog, style, locale, offerType, contextualComponents) => {
     const validStyleOptions = getValidOptions(locale, offerType, contextualComponents);
 
     if (validStyleOptions[style.layout]) {
-        return getValidStyleOptions(addLog, validStyleOptions, style);
+        return buildValidStyle(addLog, validStyleOptions, style);
     }
 
     logInvalidOption(addLog, 'style.layout', Object.keys(validStyleOptions), style.layout);
 
     // Get the default settings for a text banner
-    return getValidStyleOptions(addLog, validStyleOptions, {
-        layout: 'text'
-    });
+    return buildValidStyle(addLog, validStyleOptions, { layout: 'text' });
 };
