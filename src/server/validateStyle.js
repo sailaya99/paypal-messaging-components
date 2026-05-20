@@ -5,7 +5,7 @@ import { validateType, Types } from './types';
 const logInvalid = (addLog, location, message) => addLog(`Invalid option value (${location}). ${message}`);
 const logInvalidType = (addLog, location, expectedType, val) =>
     logInvalid(addLog, location, `Expected type "${expectedType.toLowerCase()}" but instead received "${typeof val}".`);
-export const logInvalidOption = (addLog, location, options, val) =>
+const logInvalidOption = (addLog, location, options, val) =>
     logInvalid(
         addLog,
         location,
@@ -15,7 +15,7 @@ export const logInvalidOption = (addLog, location, options, val) =>
         }".`
     );
 
-export function getValidVal(addLog, typeArr, val, location) {
+function getValidVal(addLog, typeArr, val, location) {
     const [type, validVals = []] = typeArr;
 
     if (val === undefined) {
@@ -72,7 +72,7 @@ export function getValidVal(addLog, typeArr, val, location) {
  * @param {String} prefix Keep track of property location. Used for logging.
  * @returns {Object} Object with user style options or default values if missing
  */
-export function populateDefaults(addLog, defaults, options, prefix = 'style.') {
+function populateDefaults(addLog, defaults, options, prefix = 'style.') {
     return Object.entries(defaults).reduce((accumulator, [key, val]) => {
         if (Array.isArray(val)) {
             const validVal = getValidVal(addLog, val, options[key], `${prefix}${key}`);
@@ -98,7 +98,7 @@ export function populateDefaults(addLog, defaults, options, prefix = 'style.') {
  * @param {Object} options User style options
  * @returns {Object} Object containing only valid style options
  */
-export function buildValidStyle(addLog, layoutOptions, options) {
+function buildValidStyle(addLog, layoutOptions, options) {
     return {
         layout: options.layout,
         ...populateDefaults(addLog, layoutOptions[options.layout], options)

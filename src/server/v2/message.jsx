@@ -2,116 +2,79 @@
 /** @jsxFrag Fragment */
 import { h, Fragment } from 'preact';
 
-import { objectMerge, objectFlattenToArray, curry } from '../../utils/server';
-import allStyles from '../message/styles';
-import Styles from '../message/parts/Styles';
-import { getFontRules } from '../message/font';
+import { buildContentLabel } from './utils/buildContentLabel';
+import { buildLogoConfiguration } from './utils/buildLogoConfiguration';
+import { mapClasses } from './utils/mapClasses';
+import styles from './styles';
 
-const DEFAULT_FONT_SIZE = 12;
-
-const applyCascade = curry((style, flattened, type, rules) =>
-    rules.reduce(
-        (accumulator, [key, val]) => {
-            const split = key.split(' && ');
-            if (key === 'default' || split.every(k => flattened.includes(k))) {
-                const calculatedVal =
-                    typeof val === 'function'
-                        ? val({ textSize: (style.text?.size ?? DEFAULT_FONT_SIZE) * 0.983 })
-                        : val;
-                return type === Array ? [...accumulator, calculatedVal] : objectMerge(accumulator, calculatedVal);
-            }
-            return accumulator;
-        },
-        type === Array ? [] : {}
-    )
-);
-
-const renderItem = item => {
+function renderBlock(item) {
     if (!item) return null;
-    const { type, content, src, dimensions, alt } = item;
-
-    if (type === 'logo' || type === 'image') {
-        const [width, height] = dimensions || [0, 0];
-        return (
-            <div className="message__logo-container" aria-hidden="true">
-                <div className="message__logo message__logo--svg">
-                    <img src={src} alt={alt || ''} role="presentation" />
-                    <canvas height={height} width={width} />
-                </div>
-            </div>
-        );
+    switch (item.type) {
+        case 'logo':
+        case 'image':
+            return <img src={item.src} alt={item.alt || 'PayPal'} />;
+        case 'link':
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
+            return <a href="#">{item.content}</a>;
+        case 'text':
+        default:
+            return item.content;
     }
+}
 
-    // eslint-disable-next-line react/no-danger
-    return <span dangerouslySetInnerHTML={{ __html: content || '' }} />;
-};
-
-export default ({ options, v2Content }) => {
+export default function V2Message({ options, v2Content }) {
     const { style } = options;
-    const { layout } = style;
+    const logoPosition = style.logo?.type === 'inline' ? 'inline' : style.logo?.position ?? 'left';
+    const logoType = style.logo?.type ?? 'primary';
+    const textColor = style.text?.color ?? 'black';
 
     const mainItems = v2Content?.main_items ?? [];
     const actionItems = v2Content?.action_items ?? [];
     const disclaimerItems = v2Content?.disclaimer_items ?? [];
-    const offerCountry = v2Content?.meta?.offerCountry ?? 'US';
 
-    const localeClass = `locale--${offerCountry}`;
-    const layoutProp = `layout:${layout}`;
+    const { logoBlock, hasInitialLogo, hasRightLogo, mainBlocks } = buildLogoConfiguration({
+        logoPosition,
+        mainItems
+    });
 
-    const styleSelectors = objectFlattenToArray(style);
-    const applyCascadeRules = applyCascade(style, styleSelectors);
+    const preparedMainBlocks =
+        disclaimerItems.length > 0 ? [...mainBlocks, { type: 'text', content: ' ' }, ...disclaimerItems] : mainBlocks;
 
-    const globalStyleRules = applyCascadeRules(Array, allStyles[layoutProp] ?? []);
-    const customFontStyleRules = getFontRules(style);
+    const logoClasses = mapClasses({ logo: true, [textColor]: true, [logoPosition]: true, [logoType]: true });
+    const mainClasses = mapClasses({ main: true, [logoPosition]: true, [textColor]: true });
+    const actionClasses = mapClasses({ action: true, [textColor]: true });
 
-    const logoItem = mainItems.find(item => item.type === 'logo' || item.type === 'image');
-    const textItems = mainItems.filter(item => item.type !== 'logo' && item.type !== 'image');
-
-    const logoType = logoItem ? style.logo?.type ?? 'primary' : 'none';
+    const mainLabel = buildContentLabel(preparedMainBlocks);
+    const actionLabel = buildContentLabel(actionItems);
 
     return (
-        <div className="message">
-            <Styles
-                globalStyleRules={globalStyleRules}
-                localeStyleRules={[]}
-                mutationStyleRules={[]}
-                miscStyleRules={[]}
-                customFontStyleRules={customFontStyleRules}
-            />
-            <div className={`message__container ${localeClass}`}>
-                <div className="message__foreground" />
-                <div className="message__content">
-                    {logoType !== 'none' && logoType !== 'inline' && logoItem ? renderItem(logoItem) : null}
-                    <div className="message__messaging">
-                        <div className="message__promo-container">
-                            <div className="message__headline">
-                                {textItems.map((item, idx) => (
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    <Fragment key={idx}>{renderItem(item)}</Fragment>
-                                ))}
-                                {logoType === 'inline' && logoItem ? <> {renderItem(logoItem)}</> : null}
-                            </div>
-                            {actionItems.length > 0 ? (
-                                <div className="message__sub-headline">
-                                    {actionItems.map((item, idx) => (
-                                        // eslint-disable-next-line react/no-array-index-key
-                                        <Fragment key={idx}>{renderItem(item)}</Fragment>
-                                    ))}
-                                </div>
-                            ) : null}
-                        </div>
-                        {disclaimerItems.length > 0 ? (
-                            <p className="message__disclaimer">
-                                {disclaimerItems.map((item, idx) => (
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    <Fragment key={idx}>{renderItem(item)}</Fragment>
-                                ))}
-                            </p>
-                        ) : null}
-                    </div>
-                </div>
-                <div className="message__background" />
-            </div>
+        <div className="pp-message">
+            {/* eslint-disable-next-line react/no-danger */}
+            <style dangerouslySetInnerHTML={{ __html: styles }} />
+            {hasInitialLogo && logoBlock && logoType !== 'none' ? (
+                <span role="img" aria-label={logoBlock.alt || 'PayPal'} className={logoClasses}>
+                    {renderBlock(logoBlock)}
+                </span>
+            ) : null}
+            <span aria-label={mainLabel} className={mainClasses}>
+                {preparedMainBlocks.map((item, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Fragment key={idx}>{renderBlock(item)}</Fragment>
+                ))}
+            </span>
+            {actionItems.length > 0 ? (
+                <span aria-label={actionLabel} className={actionClasses}>
+                    {actionItems.map((item, idx) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <Fragment key={idx}>{renderBlock(item)}</Fragment>
+                    ))}
+                </span>
+            ) : null}
+            {hasRightLogo && logoBlock && logoType !== 'none' ? (
+                <span role="img" aria-label={logoBlock.alt || 'PayPal'} className={logoClasses}>
+                    {renderBlock(logoBlock)}
+                </span>
+            ) : null}
         </div>
     );
-};
+}
