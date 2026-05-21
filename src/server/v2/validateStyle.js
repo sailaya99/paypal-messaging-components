@@ -3,6 +3,9 @@ import { validateType, Types } from './types';
 
 const logInvalid = (addLog, location, message) => addLog(`Invalid option value (${location}). ${message}`);
 
+const logInvalidType = (addLog, location, expectedType, val) =>
+    logInvalid(addLog, location, `Expected type "${expectedType.toLowerCase()}" but instead received "${typeof val}".`);
+
 const logInvalidOption = (addLog, location, options, val) =>
     logInvalid(
         addLog,
@@ -57,7 +60,7 @@ function getValidVal(addLog, typeArr, val, location) {
         return numberVal;
     }
 
-    logInvalid(addLog, location, `Expected type "${type.toLowerCase()}" but instead received "${typeof val}".`);
+    logInvalidType(addLog, location, type, val);
     return validVals[0];
 }
 

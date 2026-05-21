@@ -98,11 +98,13 @@ function populateDefaults(addLog, defaults, options, prefix = 'style.') {
  * @param {Object} options User style options
  * @returns {Object} Object containing only valid style options
  */
-function buildValidStyle(addLog, layoutOptions, options) {
-    return {
+function getValidStyleOptions(addLog, localeStyleOptions, options) {
+    const defaultValues = {
         layout: options.layout,
-        ...populateDefaults(addLog, layoutOptions[options.layout], options)
+        ...populateDefaults(addLog, localeStyleOptions[options.layout], options)
     };
+
+    return defaultValues;
 }
 
 /**
@@ -115,11 +117,13 @@ export default (addLog, style, locale, offerType, contextualComponents) => {
     const validStyleOptions = getValidOptions(locale, offerType, contextualComponents);
 
     if (validStyleOptions[style.layout]) {
-        return buildValidStyle(addLog, validStyleOptions, style);
+        return getValidStyleOptions(addLog, validStyleOptions, style);
     }
 
     logInvalidOption(addLog, 'style.layout', Object.keys(validStyleOptions), style.layout);
 
     // Get the default settings for a text banner
-    return buildValidStyle(addLog, validStyleOptions, { layout: 'text' });
+    return getValidStyleOptions(addLog, validStyleOptions, {
+        layout: 'text'
+    });
 };

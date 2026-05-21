@@ -14,8 +14,7 @@ function renderBlock(item) {
         case 'image':
             return <img src={item.src} alt={item.alt || 'PayPal'} />;
         case 'link':
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            return <a href="#">{item.content}</a>;
+            return <a href={item.href ?? '#'}>{item.content}</a>;
         case 'text':
         default:
             return item.content;

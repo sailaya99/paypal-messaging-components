@@ -67,4 +67,11 @@ describe('v2 validateStyle', () => {
         expect(result.color).toBe('gray');
         expect(mockLog).not.toHaveBeenCalled();
     });
+
+    test('logs type mismatch and falls back to default when wrong type is passed', () => {
+        const result = validateStyle(mockLog, { layout: 'text', logo: { type: 123 } });
+        expect(mockLog).toHaveBeenCalledTimes(1);
+        expect(mockLog.mock.calls[0][0]).toMatch(/expected type/i);
+        expect(result.logo.type).toBe('primary');
+    });
 });

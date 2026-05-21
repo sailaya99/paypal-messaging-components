@@ -152,6 +152,24 @@ describe('v2 render', () => {
         expect(result).toContain('Terms apply');
     });
 
+    test('uses item.href on link items when present', () => {
+        const content = {
+            ...baseV2Content,
+            main_items: [{ type: 'link', content: 'Terms apply', href: 'https://example.com/terms' }]
+        };
+        const result = render(baseOptions, content, mockLog);
+        expect(result).toContain('href="https://example.com/terms"');
+    });
+
+    test('falls back to # when link item has no href', () => {
+        const content = {
+            ...baseV2Content,
+            main_items: [{ type: 'link', content: 'Terms apply' }]
+        };
+        const result = render(baseOptions, content, mockLog);
+        expect(result).toContain('href="#"');
+    });
+
     test('applies text color class to main span', () => {
         const options = { style: { ...baseOptions.style, text: { color: 'white' } } };
         const result = render(options, baseV2Content, mockLog);
