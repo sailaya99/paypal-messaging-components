@@ -10,14 +10,20 @@ import styles from './styles';
 function renderBlock(item) {
     if (!item) return null;
     switch (item.type) {
-        case 'logo':
-        case 'image':
-            return <img src={item.src} alt={item.alt || 'PayPal'} />;
-        case 'link':
-            return <a href={item.href ?? '#'}>{item.content}</a>;
-        case 'text':
+        case 'IMAGE':
+            return <img src={item.source_url} alt={item.alternative_text || 'PayPal'} />;
+        case 'LINK':
+            return (
+                <span
+                    data-iframe-url={item.click_url}
+                    data-embeddable={item.embeddable !== undefined ? String(item.embeddable) : undefined}
+                >
+                    {item.text}
+                </span>
+            );
+        case 'TEXT':
         default:
-            return item.content;
+            return item.text;
     }
 }
 
@@ -37,7 +43,7 @@ export default function V2Message({ options, v2Content }) {
     });
 
     const preparedMainBlocks =
-        disclaimerItems.length > 0 ? [...mainBlocks, { type: 'text', content: ' ' }, ...disclaimerItems] : mainBlocks;
+        disclaimerItems.length > 0 ? [...mainBlocks, { type: 'TEXT', text: ' ' }, ...disclaimerItems] : mainBlocks;
 
     const logoClasses = mapClasses({ logo: true, [textColor]: true, [logoPosition]: true, [logoType]: true });
     const mainClasses = mapClasses({ main: true, [logoPosition]: true, [textColor]: true });
@@ -51,7 +57,7 @@ export default function V2Message({ options, v2Content }) {
             {/* eslint-disable-next-line react/no-danger */}
             <style dangerouslySetInnerHTML={{ __html: styles }} />
             {hasInitialLogo && logoBlock && logoType !== 'none' ? (
-                <span role="img" aria-label={logoBlock.alt || 'PayPal'} className={logoClasses}>
+                <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
                     {renderBlock(logoBlock)}
                 </span>
             ) : null}
@@ -70,7 +76,7 @@ export default function V2Message({ options, v2Content }) {
                 </span>
             ) : null}
             {hasRightLogo && logoBlock && logoType !== 'none' ? (
-                <span role="img" aria-label={logoBlock.alt || 'PayPal'} className={logoClasses}>
+                <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
                     {renderBlock(logoBlock)}
                 </span>
             ) : null}

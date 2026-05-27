@@ -25,32 +25,32 @@ describe('mapClasses', () => {
 });
 
 describe('buildContentLabel', () => {
-    test('joins content fields from text items', () => {
+    test('joins text fields from TEXT items', () => {
         const items = [
-            { type: 'text', content: 'Pay Later' },
-            { type: 'text', content: 'with PayPal' }
+            { type: 'TEXT', text: 'Pay Later' },
+            { type: 'TEXT', text: 'with PayPal' }
         ];
         expect(buildContentLabel(items)).toBe('Pay Later with PayPal');
     });
 
-    test('uses alt field for image items', () => {
+    test('uses alternative_text field for IMAGE items', () => {
         const items = [
-            { type: 'logo', alt: 'PayPal logo' },
-            { type: 'text', content: 'Pay Later' }
+            { type: 'IMAGE', alternative_text: 'PayPal logo', source_url: 'logo.svg' },
+            { type: 'TEXT', text: 'Pay Later' }
         ];
         expect(buildContentLabel(items)).toBe('PayPal logo Pay Later');
     });
 
-    test('filters empty content', () => {
+    test('filters empty text', () => {
         const items = [
-            { type: 'text', content: '' },
-            { type: 'text', content: 'Pay Later' }
+            { type: 'TEXT', text: '' },
+            { type: 'TEXT', text: 'Pay Later' }
         ];
         expect(buildContentLabel(items)).toBe('Pay Later');
     });
 
     test('trims whitespace from each item', () => {
-        const items = [{ type: 'text', content: '  Pay Later  ' }];
+        const items = [{ type: 'TEXT', text: '  Pay Later  ' }];
         expect(buildContentLabel(items)).toBe('Pay Later');
     });
 
@@ -60,10 +60,10 @@ describe('buildContentLabel', () => {
 });
 
 describe('buildLogoConfiguration', () => {
-    const logoItem = { type: 'logo', src: 'logo.svg' };
-    const textItem = { type: 'text', content: 'Pay Later' };
+    const logoItem = { type: 'IMAGE', source_url: 'logo.svg', alternative_text: 'PayPal', name: 'paypal_logo' };
+    const textItem = { type: 'TEXT', text: 'Pay Later' };
 
-    test('extracts logo block and filters from mainBlocks for left position', () => {
+    test('extracts IMAGE block and filters from mainBlocks for left position', () => {
         const result = buildLogoConfiguration({ logoPosition: 'left', mainItems: [logoItem, textItem] });
         expect(result.logoBlock).toBe(logoItem);
         expect(result.mainBlocks).toEqual([textItem]);
@@ -91,14 +91,7 @@ describe('buildLogoConfiguration', () => {
         expect(result.logoBlock).toBeUndefined();
     });
 
-    test('handles image type same as logo type', () => {
-        const imageItem = { type: 'image', src: 'logo.png' };
-        const result = buildLogoConfiguration({ logoPosition: 'left', mainItems: [imageItem, textItem] });
-        expect(result.logoBlock).toBe(imageItem);
-        expect(result.mainBlocks).toEqual([textItem]);
-    });
-
-    test('returns no logo block when no logo items present', () => {
+    test('returns no logo block when no IMAGE items present', () => {
         const result = buildLogoConfiguration({ logoPosition: 'left', mainItems: [textItem] });
         expect(result.logoBlock).toBeUndefined();
         expect(result.hasInitialLogo).toBe(false);

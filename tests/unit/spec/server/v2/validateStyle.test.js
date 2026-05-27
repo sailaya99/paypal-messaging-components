@@ -13,6 +13,24 @@ describe('v2 validateStyle', () => {
         expect(mockLog).not.toHaveBeenCalled();
     });
 
+    test('defaults missing layout to text without logging', () => {
+        const result = validateStyle(mockLog, {});
+        expect(result.layout).toBe('text');
+        expect(mockLog).not.toHaveBeenCalled();
+    });
+
+    test('defaults missing style to text without logging', () => {
+        const result = validateStyle(mockLog);
+        expect(result.layout).toBe('text');
+        expect(mockLog).not.toHaveBeenCalled();
+    });
+
+    test('defaults null style to text without logging', () => {
+        const result = validateStyle(mockLog, null);
+        expect(result.layout).toBe('text');
+        expect(mockLog).not.toHaveBeenCalled();
+    });
+
     test('returns validated flex layout with defaults', () => {
         const result = validateStyle(mockLog, { layout: 'flex' });
         expect(result.layout).toBe('flex');

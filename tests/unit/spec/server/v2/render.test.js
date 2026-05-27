@@ -11,10 +11,9 @@ const baseOptions = {
 };
 
 const baseV2Content = {
-    meta: { offerCountry: 'US' },
-    main_items: [{ type: 'text', content: 'Pay Later' }],
-    action_items: [{ type: 'text', content: 'Learn more' }],
-    disclaimer_items: [{ type: 'text', content: 'Subject to approval.' }]
+    main_items: [{ type: 'TEXT', text: 'Pay Later' }],
+    action_items: [{ type: 'LINK', text: 'Learn more', click_url: 'https://example.com/lander', embeddable: true }],
+    disclaimer_items: [{ type: 'TEXT', text: 'Subject to approval.' }]
 };
 
 describe('v2 render', () => {
@@ -63,12 +62,17 @@ describe('v2 render', () => {
         expect(result).not.toMatch(/class="action[^"]*"/);
     });
 
-    test('renders logo item as img in .logo span', () => {
+    test('renders IMAGE item as img in .logo span', () => {
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' },
-                { type: 'text', content: 'Pay Later' }
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                },
+                { type: 'TEXT', text: 'Pay Later' }
             ]
         };
         const result = render(baseOptions, content, mockLog);
@@ -81,8 +85,13 @@ describe('v2 render', () => {
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' },
-                { type: 'text', content: 'Pay Later' }
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                },
+                { type: 'TEXT', text: 'Pay Later' }
             ]
         };
         const result = render(baseOptions, content, mockLog);
@@ -94,8 +103,13 @@ describe('v2 render', () => {
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'text', content: 'Pay Later' },
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' }
+                { type: 'TEXT', text: 'Pay Later' },
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                }
             ]
         };
         const result = render(options, content, mockLog);
@@ -107,8 +121,13 @@ describe('v2 render', () => {
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' },
-                { type: 'text', content: 'Pay Later' }
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                },
+                { type: 'TEXT', text: 'Pay Later' }
             ]
         };
         const result = render(options, content, mockLog);
@@ -120,8 +139,13 @@ describe('v2 render', () => {
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'text', content: 'Pay Later' },
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' }
+                { type: 'TEXT', text: 'Pay Later' },
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                }
             ]
         };
         const result = render(options, content, mockLog);
@@ -129,45 +153,46 @@ describe('v2 render', () => {
         expect(result).not.toMatch(/role="img"/);
     });
 
-    test('logo type none suppresses logo span even when logo item is present', () => {
+    test('logo type none suppresses logo span even when IMAGE item is present', () => {
         const options = { style: { ...baseOptions.style, logo: { type: 'none', position: 'left' } } };
         const content = {
             ...baseV2Content,
             main_items: [
-                { type: 'logo', src: 'https://example.com/logo.svg', alt: 'PayPal' },
-                { type: 'text', content: 'Pay Later' }
+                {
+                    type: 'IMAGE',
+                    source_url: 'https://example.com/logo.svg',
+                    alternative_text: 'PayPal',
+                    name: 'paypal_logo'
+                },
+                { type: 'TEXT', text: 'Pay Later' }
             ]
         };
         const result = render(options, content, mockLog);
         expect(result).not.toMatch(/role="img"/);
     });
 
-    test('renders link item as an anchor tag', () => {
+    test('renders LINK item as a span with data attributes (not an anchor)', () => {
         const content = {
             ...baseV2Content,
-            main_items: [{ type: 'link', content: 'Terms apply' }]
+            main_items: [
+                { type: 'LINK', text: 'Terms apply', click_url: 'https://example.com/terms', embeddable: true }
+            ]
         };
         const result = render(baseOptions, content, mockLog);
-        expect(result).toContain('<a');
         expect(result).toContain('Terms apply');
+        expect(result).toContain('data-iframe-url="https://example.com/terms"');
+        expect(result).toContain('data-embeddable="true"');
+        expect(result).not.toContain('<a');
     });
 
-    test('uses item.href on link items when present', () => {
+    test('omits data-embeddable when embeddable is not present on LINK item', () => {
         const content = {
             ...baseV2Content,
-            main_items: [{ type: 'link', content: 'Terms apply', href: 'https://example.com/terms' }]
+            main_items: [{ type: 'LINK', text: 'Terms apply', click_url: 'https://example.com/terms' }],
+            action_items: []
         };
         const result = render(baseOptions, content, mockLog);
-        expect(result).toContain('href="https://example.com/terms"');
-    });
-
-    test('falls back to # when link item has no href', () => {
-        const content = {
-            ...baseV2Content,
-            main_items: [{ type: 'link', content: 'Terms apply' }]
-        };
-        const result = render(baseOptions, content, mockLog);
-        expect(result).toContain('href="#"');
+        expect(result).not.toContain('data-embeddable');
     });
 
     test('applies text color class to main span', () => {

@@ -14,14 +14,33 @@ const https = require('https');
 const STAGE_TAG = process.argv[2] || 'render_v2_msg';
 const BUNDLE_URL = `https://cdn-${STAGE_TAG}.static.engineering.dev.paypalinc.com/upstream/bizcomponents/stage/renderV2Message.js`;
 
-const SAMPLE_V2_CONTENT = {
-    main_items: [
-        { type: 'text', content: 'Pay Later' },
-        { type: 'text', content: ' with PayPal.' }
-    ],
-    action_items: [{ type: 'text', content: 'Learn more' }],
-    disclaimer_items: [{ type: 'text', content: 'Subject to credit approval.' }],
-    meta: { offerCountry: 'US' }
+const SAMPLE_V2_RESPONSE = {
+    messages: [
+        {
+            preferred_message: {
+                content: {
+                    main_items: [
+                        {
+                            type: 'IMAGE',
+                            name: 'paypal_logo',
+                            source_url: 'https://www.paypalobjects.com/upstream/assets/logos/v2/paypal_wordmark.svg',
+                            alternative_text: 'PayPal'
+                        },
+                        { type: 'TEXT', text: 'Buy now, pay later.' }
+                    ],
+                    action_items: [
+                        {
+                            type: 'LINK',
+                            text: 'Learn more',
+                            click_url: 'https://www.paypal.com/credit-presentment/lander',
+                            embeddable: true
+                        }
+                    ],
+                    disclaimer_items: [{ type: 'TEXT', text: 'Subject to credit approval.' }]
+                }
+            }
+        }
+    ]
 };
 
 const SAMPLE_OPTIONS = {
@@ -57,6 +76,10 @@ function evalBundle(code) {
     const wrapper = new Function('exports', 'module', 'require', code);
     wrapper(exports, mod, require);
     return mod.exports;
+}
+
+function extractPreferredContent(response) {
+    return response?.messages?.[0]?.preferred_message?.content || {};
 }
 
 async function main() {
@@ -129,7 +152,7 @@ async function main() {
     // 5. render — produce HTML
     let html;
     try {
-        html = mod.render(SAMPLE_OPTIONS, SAMPLE_V2_CONTENT, addLog);
+        html = mod.render(SAMPLE_OPTIONS, extractPreferredContent(SAMPLE_V2_RESPONSE), addLog);
     } catch (err) {
         console.error(`✗ render() threw: ${err.message}`);
         process.exit(1);
@@ -144,7 +167,7 @@ async function main() {
     const checks = [
         ['class="pp-message"', 'contains pp-message root'],
         ['class="main', 'contains main span'],
-        ['Pay Later', 'contains main_items content text']
+        ['Buy now, pay later.', 'contains main_items text content']
     ];
     checks.forEach(([needle, label]) => {
         if (!html.includes(needle)) {

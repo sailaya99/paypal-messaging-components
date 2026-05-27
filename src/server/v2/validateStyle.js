@@ -91,18 +91,21 @@ function buildValidStyle(addLog, layoutOptions, options) {
     };
 }
 
-export default (addLog, style) => {
-    if (style.layout === 'custom') {
+export default (addLog, style = {}) => {
+    const safeStyle = style ?? {};
+    const layout = safeStyle.layout ?? 'text';
+
+    if (layout === 'custom') {
         addLog(
             'Invalid option value (style.layout). The "custom" layout is not supported by renderV2Message; falling back to "text".'
         );
         return buildValidStyle(addLog, validOptions, { layout: 'text' });
     }
 
-    if (validOptions[style.layout]) {
-        return buildValidStyle(addLog, validOptions, style);
+    if (validOptions[layout]) {
+        return buildValidStyle(addLog, validOptions, { ...safeStyle, layout });
     }
 
-    logInvalidOption(addLog, 'style.layout', Object.keys(validOptions), style.layout);
+    logInvalidOption(addLog, 'style.layout', Object.keys(validOptions), layout);
     return buildValidStyle(addLog, validOptions, { layout: 'text' });
 };

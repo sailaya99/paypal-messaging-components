@@ -42,55 +42,112 @@ function evalBundle(code) {
     return mod.exports.renderV2Message || mod.exports;
 }
 
-// Simulated CPNS v2 content payloads (one per variant)
+function extractPreferredContent(response) {
+    return response?.messages?.[0]?.preferred_message?.content || {};
+}
+
+// Simulated v2 API responses (one per variant)
 const VARIANTS = [
     {
-        label: 'Text layout — Pay Later headline',
+        label: 'Text layout — logo + Pay Later headline',
         style: { layout: 'text', logo: { type: 'primary', position: 'left' }, text: { color: 'black', size: 14 } },
-        v2Content: {
-            main_items: [
-                { type: 'text', content: 'Buy now, pay later' },
-                { type: 'text', content: ' with PayPal.' }
-            ],
-            action_items: [{ type: 'text', content: 'Learn more' }],
-            disclaimer_items: [{ type: 'text', content: 'Subject to credit approval.' }],
-            meta: { offerCountry: 'US' }
+        v2Response: {
+            messages: [
+                {
+                    preferred_message: {
+                        content: {
+                            main_items: [
+                                {
+                                    type: 'IMAGE',
+                                    name: 'paypal_logo',
+                                    source_url:
+                                        'https://www.paypalobjects.com/upstream/assets/logos/v2/paypal_wordmark.svg',
+                                    alternative_text: 'PayPal'
+                                },
+                                { type: 'TEXT', text: 'Buy now, pay later.' }
+                            ],
+                            action_items: [
+                                {
+                                    type: 'LINK',
+                                    text: 'Learn more',
+                                    click_url: 'https://www.paypal.com/credit-presentment/lander',
+                                    embeddable: true
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
         }
     },
     {
         label: 'Text layout — no action items',
         style: { layout: 'text', logo: { type: 'alternative', position: 'left' }, text: { color: 'black' } },
-        v2Content: {
-            main_items: [{ type: 'text', content: '4 interest-free payments of $25.00' }],
-            action_items: [],
-            disclaimer_items: [{ type: 'text', content: 'Pay in 4 available.' }],
-            meta: { offerCountry: 'US' }
+        v2Response: {
+            messages: [
+                {
+                    preferred_message: {
+                        content: {
+                            main_items: [
+                                {
+                                    type: 'IMAGE',
+                                    name: 'paypal_logo',
+                                    source_url:
+                                        'https://www.paypalobjects.com/upstream/assets/logos/v2/paypal_wordmark.svg',
+                                    alternative_text: 'PayPal'
+                                },
+                                { type: 'TEXT', text: '4 interest-free payments of $25.00.' }
+                            ],
+                            action_items: []
+                        }
+                    }
+                }
+            ]
         }
     },
     {
-        label: 'Text layout — grayscale logo',
-        style: { layout: 'text', logo: { type: 'primary', position: 'left' }, text: { color: 'black' } },
-        v2Content: {
-            main_items: [
-                { type: 'text', content: 'Pay Later' },
-                { type: 'text', content: ' — 0% interest for 6 months' }
-            ],
-            action_items: [{ type: 'text', content: 'Learn more' }],
-            disclaimer_items: [],
-            meta: { offerCountry: 'US' }
+        label: 'Text layout — logo right',
+        style: { layout: 'text', logo: { type: 'primary', position: 'right' }, text: { color: 'black' } },
+        v2Response: {
+            messages: [
+                {
+                    preferred_message: {
+                        content: {
+                            main_items: [
+                                { type: 'TEXT', text: 'As low as $26.94/mo.' },
+                                {
+                                    type: 'IMAGE',
+                                    name: 'paypal_logo',
+                                    source_url:
+                                        'https://www.paypalobjects.com/upstream/assets/logos/v2/paypal_wordmark.svg',
+                                    alternative_text: 'PayPal'
+                                }
+                            ],
+                            action_items: [
+                                {
+                                    type: 'LINK',
+                                    text: 'Learn more',
+                                    click_url: 'https://www.paypal.com/credit-presentment/lander',
+                                    embeddable: true
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
         }
     }
 ];
 
 async function buildPage(mod) {
-    const sections = VARIANTS.map(({ label, style, v2Content }) => {
+    const sections = VARIANTS.map(({ label, style, v2Response }) => {
         const logs = [];
         const addLog = msg => logs.push(msg);
         const validStyle = mod.validateStyle(addLog, style);
         const parentStyles = mod.getParentStyles(validStyle) || '';
         const html = mod.render(
             { style: validStyle, amount: 100, currency: 'USD', locale: 'en_US', buyerCountry: 'US' },
-            v2Content,
+            extractPreferredContent(v2Response),
             addLog
         );
         return `
