@@ -54,8 +54,17 @@ export default function V2Message({ options, v2Content }) {
 
     return (
         <div className="pp-message">
-            {/* eslint-disable-next-line react/no-danger */}
-            <style dangerouslySetInnerHTML={{ __html: styles({ fontSize: style.text?.size }) }} />
+            {/* eslint-disable react/no-danger */}
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: styles({
+                        fontFamily: style.text?.fontFamily,
+                        fontSize: style.text?.size,
+                        textAlign: style.text?.align
+                    })
+                }}
+            />
+            {/* eslint-enable react/no-danger */}
             {hasInitialLogo && logoBlock && logoType !== 'none' ? (
                 <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
                     {renderBlock(logoBlock)}

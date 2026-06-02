@@ -1,9 +1,13 @@
-export default ({ fontSize = 12 } = {}) => `
+export default ({
+    fontFamily = '"PayPal Pro", Helvetica, Arial, "Liberation Sans", sans-serif',
+    fontSize = 12,
+    textAlign = 'left'
+} = {}) => `
 .pp-message {
-    font-family: "PayPal Pro", Helvetica, Arial, "Liberation Sans", sans-serif;
+    font-family: ${fontFamily};
     font-weight: 450;
     font-size: ${fontSize}px;
-    text-align: left;
+    text-align: ${textAlign};
 }
 
 .pp-message .main.black { color: #000; }
