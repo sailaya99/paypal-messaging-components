@@ -1,8 +1,8 @@
-export default `
+export default ({ fontSize = 12 } = {}) => `
 .pp-message {
     font-family: "PayPal Pro", Helvetica, Arial, "Liberation Sans", sans-serif;
     font-weight: 450;
-    font-size: 14px;
+    font-size: ${fontSize}px;
     text-align: left;
 }
 
@@ -11,13 +11,13 @@ export default `
 .pp-message .main.grayscale { color: #000; }
 .pp-message .main.white { color: #fff; }
 
-.pp-message .action a {
+.pp-message .action [data-iframe-url] {
     color: #0070ba;
     white-space: nowrap;
 }
-.pp-message .action.monochrome > a { color: #000; }
-.pp-message .action.grayscale > a { color: #000; }
-.pp-message .action.white > a { color: #fff; }
+.pp-message .action.monochrome > [data-iframe-url] { color: #000; }
+.pp-message .action.grayscale > [data-iframe-url] { color: #000; }
+.pp-message .action.white > [data-iframe-url] { color: #fff; }
 
 .pp-message .logo { display: inline-block; }
 .pp-message .logo.top { display: block; }

@@ -31,7 +31,7 @@ export default function V2Message({ options, v2Content }) {
     const { style } = options;
     const logoPosition = style.logo?.type === 'inline' ? 'inline' : style.logo?.position ?? 'left';
     const logoType = style.logo?.type ?? 'primary';
-    const textColor = style.text?.color ?? 'black';
+    const textColor = style.layout === 'flex' ? style.color ?? 'black' : style.text?.color ?? 'black';
 
     const mainItems = v2Content?.main_items ?? [];
     const actionItems = v2Content?.action_items ?? [];
@@ -55,7 +55,7 @@ export default function V2Message({ options, v2Content }) {
     return (
         <div className="pp-message">
             {/* eslint-disable-next-line react/no-danger */}
-            <style dangerouslySetInnerHTML={{ __html: styles }} />
+            <style dangerouslySetInnerHTML={{ __html: styles({ fontSize: style.text?.size }) }} />
             {hasInitialLogo && logoBlock && logoType !== 'none' ? (
                 <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
                     {renderBlock(logoBlock)}

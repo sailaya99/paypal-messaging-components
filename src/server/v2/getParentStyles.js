@@ -47,7 +47,9 @@ function toCSSValue(value) {
         const match = value.match(/^(\d+)x(\d+)$/);
 
         if (match) {
-            return `${match.slice(1).reduce((denominator, numerator) => +numerator / +denominator) * 100}%`;
+            return `${
+                match.slice(1).reduce((denominator, numerator) => Number(numerator) / Number(denominator)) * 100
+            }%`;
         }
     }
 
