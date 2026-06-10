@@ -1,4 +1,5 @@
 import render from 'server/v2/render';
+import validateStyle from 'server/v2/validateStyle';
 
 const mockLog = jest.fn();
 
@@ -201,6 +202,18 @@ describe('v2 render', () => {
         expect(result).toMatch(/class="main[^"]*white[^"]*"/);
     });
 
+    test('greyscale alias normalizes to grayscale class after validation', () => {
+        const raw = {
+            layout: 'text',
+            logo: { type: 'primary', position: 'left' },
+            text: { color: 'greyscale', size: 12 }
+        };
+        const validatedStyle = validateStyle(mockLog, raw);
+        const result = render({ style: validatedStyle }, baseV2Content, mockLog);
+        expect(result).toMatch(/class="main[^"]*grayscale[^"]*"/);
+        expect(result).not.toContain('greyscale');
+    });
+
     test('handles empty main_items gracefully', () => {
         const content = { ...baseV2Content, main_items: [] };
         const result = render(baseOptions, content, mockLog);
@@ -218,5 +231,204 @@ describe('v2 render', () => {
         expect(result).not.toContain('message__container');
         expect(result).not.toContain('message__headline');
         expect(result).not.toContain('message__foreground');
+    });
+
+    test('maps validated v5 text style options to root data attributes', () => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: 'primary', position: 'top' },
+                text: { align: 'center', color: 'white', size: 16 }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toContain('data-pp-style-layout="text"');
+        expect(result).toContain('data-pp-style-logo-position="top"');
+        expect(result).toContain('data-pp-style-logo-type="primary"');
+        expect(result).toContain('data-pp-style-text-align="center"');
+        expect(result).toContain('data-pp-style-text-color="white"');
+        expect(result).toContain('data-pp-style-text-size="16"');
+    });
+});
+
+describe('v2 render fontSource', () => {
+    test('generates @font-face rule for a single fontSource URL', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: { color: 'black', size: 12, fontSource: ['https://example.com/font.woff2'] }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toContain('@font-face');
+        expect(result).toContain("url('https://example.com/font.woff2')");
+        expect(result).toContain("font-family: 'PP Merchant Font 1'");
+    });
+
+    test('prepends custom font name to font-family stack', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: { color: 'black', size: 12, fontSource: ['https://example.com/font.woff2'] }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toMatch(/font-family:\s*'PP Merchant Font 1',/);
+        expect(result).not.toContain('"PayPal Pro"');
+    });
+
+    test('generates one @font-face rule per fontSource URL', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: {
+                    color: 'black',
+                    size: 12,
+                    fontSource: ['https://example.com/font1.woff2', 'https://example.com/font2.woff2']
+                }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toContain("url('https://example.com/font1.woff2')");
+        expect(result).toContain("url('https://example.com/font2.woff2')");
+        expect(result).toContain("'PP Merchant Font 1'");
+        expect(result).toContain("'PP Merchant Font 2'");
+    });
+
+    test('includes explicit fontFamily after fontSource names in font-family stack', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: {
+                    color: 'black',
+                    size: 12,
+                    fontSource: ['https://example.com/font.woff2'],
+                    fontFamily: ['MyFont']
+                }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toMatch(/'PP Merchant Font 1',\s*'MyFont',/);
+    });
+
+    test('includes explicit fontFamily without fontSource', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: { color: 'black', size: 12, fontFamily: ['Impact', 'sans-serif'] }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).toContain("font-family: 'Impact', sans-serif, Helvetica");
+    });
+
+    test('uses PayPal Pro default font-family when fontSource is not provided', () => {
+        const result = render(baseOptions, baseV2Content, mockLog);
+        expect(result).not.toContain('@font-face');
+        expect(result).toContain('"PayPal Pro"');
+    });
+
+    test('uses PayPal Pro default font-family when fontSource is empty array', () => {
+        const options = {
+            style: { ...baseOptions.style, text: { color: 'black', size: 12, fontSource: [] } }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).not.toContain('@font-face');
+        expect(result).toContain('"PayPal Pro"');
+    });
+
+    test('ignores unsafe fontSource URLs', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: { color: 'black', size: 12, fontSource: ['./font.woff2'] }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).not.toContain('@font-face');
+        expect(result).not.toContain('./font.woff2');
+    });
+
+    test('ignores unsafe fontFamily values', () => {
+        const options = {
+            style: {
+                ...baseOptions.style,
+                text: { color: 'black', size: 12, fontFamily: ["</style><script>alert('x')</script>"] }
+            }
+        };
+        const result = render(options, baseV2Content, mockLog);
+        expect(result).not.toContain('<script>');
+        expect(result).toContain('"PayPal Pro"');
+    });
+});
+
+describe('v2 render snapshots', () => {
+    const contentWithLogo = {
+        main_items: [
+            {
+                type: 'IMAGE',
+                source_url: 'https://example.com/logo.svg',
+                alternative_text: 'PayPal',
+                name: 'paypal_logo'
+            },
+            { type: 'TEXT', text: 'Pay Later.' }
+        ],
+        action_items: [{ type: 'LINK', text: 'Learn more', click_url: 'https://example.com/lander', embeddable: true }],
+        disclaimer_items: [{ type: 'TEXT', text: 'Subject to approval.' }]
+    };
+
+    test.each([['primary'], ['alternative'], ['inline'], ['none']])('logo type: %s', logoType => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: logoType, position: 'left' },
+                text: { color: 'black', size: 12, align: 'left' }
+            }
+        };
+        expect(render(options, contentWithLogo)).toMatchSnapshot();
+    });
+
+    test.each([['left'], ['right'], ['top']])('logo position: %s', position => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: 'primary', position },
+                text: { color: 'black', size: 12, align: 'left' }
+            }
+        };
+        expect(render(options, contentWithLogo)).toMatchSnapshot();
+    });
+
+    test.each([['black'], ['white'], ['monochrome'], ['grayscale']])('text color: %s', color => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: 'primary', position: 'left' },
+                text: { color, size: 12, align: 'left' }
+            }
+        };
+        expect(render(options, baseV2Content)).toMatchSnapshot();
+    });
+
+    test.each([[10], [11], [12], [13], [14], [15], [16]])('text size: %spx', size => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: 'primary', position: 'left' },
+                text: { color: 'black', size, align: 'left' }
+            }
+        };
+        expect(render(options, baseV2Content)).toMatchSnapshot();
+    });
+
+    test.each([['left'], ['center'], ['right']])('text align: %s', align => {
+        const options = {
+            style: {
+                layout: 'text',
+                logo: { type: 'primary', position: 'left' },
+                text: { color: 'black', size: 12, align }
+            }
+        };
+        expect(render(options, baseV2Content)).toMatchSnapshot();
     });
 });

@@ -53,12 +53,21 @@ export default function V2Message({ options, v2Content }) {
     const actionLabel = buildContentLabel(actionItems);
 
     return (
-        <div className="pp-message">
+        <div
+            className="pp-message"
+            data-pp-style-layout={style.layout}
+            data-pp-style-logo-position={logoPosition}
+            data-pp-style-logo-type={logoType}
+            data-pp-style-text-align={style.text?.align}
+            data-pp-style-text-color={textColor}
+            data-pp-style-text-size={style.text?.size}
+        >
             {/* eslint-disable react/no-danger */}
             <style
                 dangerouslySetInnerHTML={{
                     __html: styles({
                         fontFamily: style.text?.fontFamily,
+                        fontSource: style.text?.fontSource,
                         fontSize: style.text?.size,
                         textAlign: style.text?.align
                     })
