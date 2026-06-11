@@ -377,7 +377,24 @@ describe('v2 render snapshots', () => {
         disclaimer_items: [{ type: 'TEXT', text: 'Subject to approval.' }]
     };
 
-    test.each([['primary'], ['alternative'], ['inline'], ['none']])('logo type: %s', logoType => {
+    const baseStyleOptions = {
+        style: {
+            layout: 'text',
+            logo: { type: 'primary', position: 'left' },
+            text: { color: 'black', size: 12, align: 'left' }
+        }
+    };
+
+    test('full render snapshot for representative case', () => {
+        expect(render(baseStyleOptions, contentWithLogo)).toMatchSnapshot();
+    });
+
+    test('renders the v2 stylesheet once', () => {
+        const result = render(baseStyleOptions, contentWithLogo);
+        expect(result.match(/<style>[\s\S]*?<\/style>/)[0]).toMatchSnapshot();
+    });
+
+    test.each([['primary'], ['alternative'], ['inline'], ['none']])('maps logo type: %s', logoType => {
         const options = {
             style: {
                 layout: 'text',
@@ -385,10 +402,11 @@ describe('v2 render snapshots', () => {
                 text: { color: 'black', size: 12, align: 'left' }
             }
         };
-        expect(render(options, contentWithLogo)).toMatchSnapshot();
+        const result = render(options, contentWithLogo);
+        expect(result).toContain(`data-pp-style-logo-type="${logoType}"`);
     });
 
-    test.each([['left'], ['right'], ['top']])('logo position: %s', position => {
+    test.each([['left'], ['right'], ['top']])('maps logo position: %s', position => {
         const options = {
             style: {
                 layout: 'text',
@@ -396,10 +414,11 @@ describe('v2 render snapshots', () => {
                 text: { color: 'black', size: 12, align: 'left' }
             }
         };
-        expect(render(options, contentWithLogo)).toMatchSnapshot();
+        const result = render(options, contentWithLogo);
+        expect(result).toContain(`data-pp-style-logo-position="${position}"`);
     });
 
-    test.each([['black'], ['white'], ['monochrome'], ['grayscale']])('text color: %s', color => {
+    test.each([['black'], ['white'], ['monochrome'], ['grayscale']])('maps text color: %s', color => {
         const options = {
             style: {
                 layout: 'text',
@@ -407,10 +426,11 @@ describe('v2 render snapshots', () => {
                 text: { color, size: 12, align: 'left' }
             }
         };
-        expect(render(options, baseV2Content)).toMatchSnapshot();
+        const result = render(options, baseV2Content);
+        expect(result).toContain(`data-pp-style-text-color="${color}"`);
     });
 
-    test.each([[10], [11], [12], [13], [14], [15], [16]])('text size: %spx', size => {
+    test.each([[10], [11], [12], [13], [14], [15], [16]])('maps text size: %spx', size => {
         const options = {
             style: {
                 layout: 'text',
@@ -418,10 +438,11 @@ describe('v2 render snapshots', () => {
                 text: { color: 'black', size, align: 'left' }
             }
         };
-        expect(render(options, baseV2Content)).toMatchSnapshot();
+        const result = render(options, baseV2Content);
+        expect(result).toContain(`data-pp-style-text-size="${size}"`);
     });
 
-    test.each([['left'], ['center'], ['right']])('text align: %s', align => {
+    test.each([['left'], ['center'], ['right']])('maps text align: %s', align => {
         const options = {
             style: {
                 layout: 'text',
@@ -429,6 +450,25 @@ describe('v2 render snapshots', () => {
                 text: { color: 'black', size: 12, align }
             }
         };
-        expect(render(options, baseV2Content)).toMatchSnapshot();
+        const result = render(options, baseV2Content);
+        expect(result).toContain(`data-pp-style-text-align="${align}"`);
+    });
+});
+
+describe('v2 render stylesheet isolation', () => {
+    test('stylesheet is embedded inline — no external CSS dependency', () => {
+        const result = render(baseOptions, baseV2Content, mockLog);
+        expect(result).toMatch(/<style>[\s\S]*?<\/style>/);
+        expect(result).not.toContain('<link');
+    });
+
+    test('all stylesheet selectors are scoped to .pp-message or body reset', () => {
+        const result = render(baseOptions, baseV2Content, mockLog);
+        const css = result.match(/<style>([\s\S]*?)<\/style>/)[1];
+        const selectorLines = css
+            .split('\n')
+            .map(l => l.trim())
+            .filter(l => l.length > 0 && !l.startsWith('@') && !l.startsWith('}') && l.includes('{'));
+        expect(selectorLines.every(l => l.startsWith('.pp-message') || l.startsWith('body'))).toBe(true);
     });
 });

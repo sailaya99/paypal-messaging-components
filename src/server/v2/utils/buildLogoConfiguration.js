@@ -1,5 +1,5 @@
-export function buildLogoConfiguration({ logoPosition, mainItems }) {
-    if (logoPosition === 'inline') {
+export function buildLogoConfiguration({ logoType, logoPosition, mainItems }) {
+    if (logoType === 'inline') {
         return { hasInitialLogo: false, hasRightLogo: false, logoBlock: undefined, mainBlocks: mainItems };
     }
 

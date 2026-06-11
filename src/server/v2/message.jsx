@@ -29,8 +29,8 @@ function renderBlock(item) {
 
 export default function V2Message({ options, v2Content }) {
     const { style } = options;
-    const logoPosition = style.logo?.type === 'inline' ? 'inline' : style.logo?.position ?? 'left';
     const logoType = style.logo?.type ?? 'primary';
+    const logoPosition = style.logo?.position ?? 'left';
     const textColor = style.layout === 'flex' ? style.color ?? 'black' : style.text?.color ?? 'black';
 
     const mainItems = v2Content?.main_items ?? [];
@@ -38,6 +38,7 @@ export default function V2Message({ options, v2Content }) {
     const disclaimerItems = v2Content?.disclaimer_items ?? [];
 
     const { logoBlock, hasInitialLogo, hasRightLogo, mainBlocks } = buildLogoConfiguration({
+        logoType,
         logoPosition,
         mainItems
     });
