@@ -95,16 +95,16 @@ describe('buildLogoConfiguration', () => {
         expect(result.hasRightLogo).toBe(false);
     });
 
-    test('inline logo type keeps all items in mainBlocks regardless of position', () => {
+    test('inline logo type extracts IMAGE into logoBlock and removes it from mainBlocks', () => {
         const result = buildLogoConfiguration({
             logoType: 'inline',
             logoPosition: 'left',
             mainItems: [logoItem, textItem]
         });
-        expect(result.mainBlocks).toEqual([logoItem, textItem]);
+        expect(result.logoBlock).toBe(logoItem);
+        expect(result.mainBlocks).toEqual([textItem]);
         expect(result.hasInitialLogo).toBe(false);
         expect(result.hasRightLogo).toBe(false);
-        expect(result.logoBlock).toBeUndefined();
     });
 
     test('returns no logo block when no IMAGE items present', () => {

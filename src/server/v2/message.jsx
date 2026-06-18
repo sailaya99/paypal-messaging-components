@@ -27,6 +27,15 @@ function renderBlock(item) {
     }
 }
 
+function renderLogo(block, className) {
+    if (!block) return null;
+    return (
+        <span role="img" aria-label={block.alternative_text || 'PayPal'} className={className}>
+            {renderBlock(block)}
+        </span>
+    );
+}
+
 export default function V2Message({ options, v2Content }) {
     const { style } = options;
     const logoType = style.logo?.type ?? 'primary';
@@ -75,12 +84,9 @@ export default function V2Message({ options, v2Content }) {
                 }}
             />
             {/* eslint-enable react/no-danger */}
-            {hasInitialLogo && logoBlock && logoType !== 'none' ? (
-                <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
-                    {renderBlock(logoBlock)}
-                </span>
-            ) : null}
+            {hasInitialLogo && logoType !== 'none' ? renderLogo(logoBlock, logoClasses) : null}
             <span aria-label={mainLabel} className={mainClasses}>
+                {logoType === 'inline' ? renderLogo(logoBlock, logoClasses) : null}
                 {preparedMainBlocks.map((item, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <Fragment key={idx}>{renderBlock(item)}</Fragment>
@@ -94,11 +100,7 @@ export default function V2Message({ options, v2Content }) {
                     ))}
                 </span>
             ) : null}
-            {hasRightLogo && logoBlock && logoType !== 'none' ? (
-                <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className={logoClasses}>
-                    {renderBlock(logoBlock)}
-                </span>
-            ) : null}
+            {hasRightLogo && logoType !== 'none' ? renderLogo(logoBlock, logoClasses) : null}
         </div>
     );
 }

@@ -135,7 +135,7 @@ describe('v2 render', () => {
         expect(result).toMatch(/class="logo[^"]*top[^"]*"/);
     });
 
-    test('inline logo type keeps logo in main blocks without a standalone logo span', () => {
+    test('inline logo type renders logo inside main span via logo-aware path', () => {
         const options = { style: { ...baseOptions.style, logo: { type: 'inline', position: 'left' } } };
         const content = {
             ...baseV2Content,
@@ -150,8 +150,12 @@ describe('v2 render', () => {
             ]
         };
         const result = render(options, content, mockLog);
-        // no standalone logo span — logo rendered inline within main blocks
-        expect(result).not.toMatch(/role="img"/);
+        // logo is wrapped in .logo.inline span for color-filter CSS to apply
+        expect(result).toMatch(/class="logo[^"]*inline[^"]*"/);
+        // logo span is nested inside the main span, not a standalone sibling
+        const mainIdx = result.indexOf('class="main');
+        const logoIdx = result.indexOf('class="logo');
+        expect(logoIdx).toBeGreaterThan(mainIdx);
     });
 
     test('logo type none suppresses logo span even when IMAGE item is present', () => {
@@ -418,7 +422,7 @@ describe('v2 render snapshots', () => {
         expect(result).toContain(`data-pp-style-logo-position="${position}"`);
     });
 
-    test.each([['black'], ['white'], ['monochrome'], ['grayscale']])('maps text color: %s', color => {
+    test.each([['black'], ['white'], ['monochrome'], ['grayscale']])('applies text color class and CSS: %s', color => {
         const options = {
             style: {
                 layout: 'text',
@@ -427,7 +431,24 @@ describe('v2 render snapshots', () => {
             }
         };
         const result = render(options, baseV2Content);
-        expect(result).toContain(`data-pp-style-text-color="${color}"`);
+        expect(result).toMatch(new RegExp(`class="main[^"]*${color}`));
+        expect(result).toContain(`.pp-message .main.${color}`);
+    });
+
+    test('applies white logo color filter when logo type is inline', () => {
+        const result = render(
+            {
+                style: {
+                    layout: 'text',
+                    logo: { type: 'inline', position: 'left' },
+                    text: { color: 'white', size: 12, align: 'left' }
+                }
+            },
+            contentWithLogo
+        );
+
+        expect(result).toMatch(/class="logo[^"]*white[^"]*inline/);
+        expect(result).toContain('.pp-message .logo.white img');
     });
 
     test.each([[10], [11], [12], [13], [14], [15], [16]])('maps text size: %spx', size => {

@@ -1,45 +1,16 @@
+import { buildFontRules } from '../message/font';
+
 const DEFAULT_FONT_FAMILY = '"PayPal Pro", Helvetica, Arial, "Liberation Sans", sans-serif';
 const FONT_FALLBACKS = 'Helvetica, Arial, "Liberation Sans", sans-serif';
-const GENERIC_FONT_FAMILIES = new Set([
-    'serif',
-    'sans-serif',
-    'monospace',
-    'cursive',
-    'fantasy',
-    'system-ui',
-    'ui-serif',
-    'ui-sans-serif',
-    'ui-monospace'
-]);
-
-const isSafeFontName = value => typeof value === 'string' && /^[\w\s-]+$/.test(value.trim());
-const isSafeFontSource = value => typeof value === 'string' && /^https:\/\/[^'")\s]+$/i.test(value);
-
-function formatFontFamilyName(value) {
-    if (GENERIC_FONT_FAMILIES.has(value)) {
-        return value;
-    }
-
-    return `'${value}'`;
-}
 
 export default ({ fontFamily, fontSource, fontSize = 12, textAlign = 'left' } = {}) => {
-    const sources = Array.isArray(fontSource) ? fontSource.filter(isSafeFontSource) : [];
-    const families = Array.isArray(fontFamily) ? fontFamily.filter(isSafeFontName).map(formatFontFamilyName) : [];
-
-    const fontFaceRules = sources
-        .map((url, i) => `@font-face { font-family: 'PP Merchant Font ${i + 1}'; src: url('${url}'); }`)
-        .join('\n');
-
-    const customSourceNames = sources.map((_, i) => `'PP Merchant Font ${i + 1}'`);
-
-    let effectiveFontFamily;
-    if (customSourceNames.length > 0 || families.length > 0) {
-        const parts = [...customSourceNames, ...families, FONT_FALLBACKS];
-        effectiveFontFamily = parts.join(', ');
-    } else {
-        effectiveFontFamily = DEFAULT_FONT_FAMILY;
-    }
+    const { fontFaceRules, effectiveFontFamily } = buildFontRules({
+        fontSource,
+        fontFamily,
+        fallbackStack: FONT_FALLBACKS,
+        defaultFontFamily: DEFAULT_FONT_FAMILY,
+        fontNamePrefix: 'PP Merchant Font'
+    });
 
     return `${fontFaceRules ? `${fontFaceRules}\n` : ''}
 body {
