@@ -36,11 +36,86 @@ function renderLogo(block, className) {
     );
 }
 
+function FlexMessage({ style, v2Content }) {
+    const color = style.color ?? 'black';
+    const ratio = style.ratio ?? '8x1';
+
+    const mainItems = v2Content?.main_items ?? [];
+    const actionItems = v2Content?.action_items ?? [];
+    const disclaimerItems = v2Content?.disclaimer_items ?? [];
+
+    const logoBlock = mainItems.find(item => item.type === 'IMAGE');
+    const mainBlocks = mainItems.filter(item => item.type !== 'IMAGE');
+
+    const mainLabel = buildContentLabel(mainBlocks);
+    const actionLabel = buildContentLabel(actionItems);
+
+    return (
+        <div
+            className={`pp-message pp-flex ${color} r-${ratio}`}
+            data-pp-style-layout="flex"
+            data-pp-style-color={color}
+            data-pp-style-ratio={ratio}
+        >
+            {/* eslint-disable react/no-danger */}
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: styles({
+                        layout: 'flex',
+                        fontFamily: style.text?.fontFamily,
+                        fontSource: style.text?.fontSource
+                    })
+                }}
+            />
+            {/* eslint-enable react/no-danger */}
+            <div className="pp-flex__background" />
+            <div className="pp-flex__content">
+                {logoBlock ? (
+                    <div className="pp-flex__logo-container">
+                        <span role="img" aria-label={logoBlock.alternative_text || 'PayPal'} className="pp-flex__logo">
+                            {renderBlock(logoBlock)}
+                        </span>
+                    </div>
+                ) : null}
+                <div className="pp-flex__messaging">
+                    <div aria-label={mainLabel} className="pp-flex__main">
+                        {mainBlocks.map((item, idx) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <Fragment key={idx}>{renderBlock(item)}</Fragment>
+                        ))}
+                    </div>
+                    {actionItems.length > 0 ? (
+                        <div aria-label={actionLabel} className="pp-flex__action">
+                            {actionItems.map((item, idx) => (
+                                // eslint-disable-next-line react/no-array-index-key
+                                <Fragment key={idx}>{renderBlock(item)}</Fragment>
+                            ))}
+                        </div>
+                    ) : null}
+                    {disclaimerItems.length > 0 ? (
+                        <div className="pp-flex__disclaimer">
+                            {disclaimerItems.map((item, idx) => (
+                                // eslint-disable-next-line react/no-array-index-key
+                                <Fragment key={idx}>{renderBlock(item)}</Fragment>
+                            ))}
+                        </div>
+                    ) : null}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function V2Message({ options, v2Content }) {
     const { style } = options;
+
+    if (style.layout === 'flex') {
+        return <FlexMessage style={style} v2Content={v2Content} />;
+    }
+
     const logoType = style.logo?.type ?? 'primary';
     const logoPosition = style.logo?.position ?? 'left';
-    const textColor = style.layout === 'flex' ? style.color ?? 'black' : style.text?.color ?? 'black';
+    const textColor = style.text?.color ?? 'black';
 
     const mainItems = v2Content?.main_items ?? [];
     const actionItems = v2Content?.action_items ?? [];
