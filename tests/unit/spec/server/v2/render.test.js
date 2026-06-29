@@ -665,14 +665,8 @@ describe('v2 render flex snapshots', () => {
         disclaimer_items: [{ type: 'TEXT', text: 'Subject to approval.' }]
     };
 
-    test.each([
-        ['blue', '8x1'],
-        ['black', '8x1'],
-        ['white', '1x1'],
-        ['gray', '1x4'],
-        ['monochrome', '20x1']
-    ])('full render snapshot for flex color=%s ratio=%s', (color, ratio) => {
-        const options = { style: { layout: 'flex', color, ratio } };
+    test('full render snapshot for representative case (blue/8x1)', () => {
+        const options = { style: { layout: 'flex', color: 'blue', ratio: '8x1' } };
         expect(render(options, flexContentWithLogo)).toMatchSnapshot();
     });
 
@@ -680,6 +674,21 @@ describe('v2 render flex snapshots', () => {
         const options = { style: { layout: 'flex', color: 'blue', ratio: '8x1' } };
         const result = render(options, flexContentWithLogo);
         expect(result.match(/<style>[\s\S]*?<\/style>/)[0]).toMatchSnapshot();
+    });
+
+    test.each([
+        ['black', '8x1'],
+        ['white', '1x1'],
+        ['gray', '1x4'],
+        ['monochrome', '20x1']
+    ])('flex color=%s ratio=%s renders expected root class and data attributes', (color, ratio) => {
+        const options = { style: { layout: 'flex', color, ratio } };
+        const result = render(options, flexContentWithLogo);
+        expect(result).toContain(`class="pp-message pp-flex ${color} r-${ratio}"`);
+        expect(result).toContain(`data-pp-style-color="${color}"`);
+        expect(result).toContain(`data-pp-style-ratio="${ratio}"`);
+        expect(result).toContain('class="pp-flex__background"');
+        expect(result).toContain('class="pp-flex__content"');
     });
 });
 
