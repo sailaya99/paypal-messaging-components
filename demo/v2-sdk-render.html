@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Local renderV2Message SDK Test</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: #f6f8fb;
+                color: #1f2937;
+                font: 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            }
+
+            main {
+                width: min(1120px, calc(100vw - 32px));
+                margin: 24px auto;
+            }
+
+            h1,
+            h2,
+            p {
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 15px;
+            }
+
+            p {
+                color: #5f6b7a;
+            }
+
+            button,
+            input,
+            select {
+                min-height: 36px;
+                border: 1px solid #cfd7e3;
+                border-radius: 4px;
+                background: #ffffff;
+                color: #1f2937;
+                font: inherit;
+            }
+
+            button {
+                cursor: pointer;
+                padding: 7px 12px;
+                font-weight: 700;
+            }
+
+            button.primary {
+                border-color: #0070ba;
+                background: #0070ba;
+                color: #ffffff;
+            }
+
+            label {
+                display: grid;
+                gap: 6px;
+                color: #5f6b7a;
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+            input,
+            select {
+                width: 100%;
+                padding: 7px 9px;
+            }
+
+            code,
+            pre {
+                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            }
+
+            pre {
+                overflow: auto;
+                min-height: 220px;
+                margin: 0;
+                padding: 12px;
+                border-radius: 4px;
+                background: #111827;
+                color: #e5e7eb;
+                white-space: pre-wrap;
+            }
+
+            .intro {
+                display: grid;
+                gap: 6px;
+                margin-bottom: 16px;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: 340px minmax(0, 1fr);
+                gap: 16px;
+            }
+
+            .panel {
+                border: 1px solid #d9e0ea;
+                border-radius: 6px;
+                background: #ffffff;
+            }
+
+            .panel-header,
+            .panel-body {
+                padding: 14px;
+            }
+
+            .panel-header {
+                border-bottom: 1px solid #d9e0ea;
+            }
+
+            .controls {
+                display: grid;
+                gap: 12px;
+            }
+
+            .split {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .render-area {
+                display: grid;
+                gap: 14px;
+                min-height: 190px;
+                align-content: start;
+                padding: 18px;
+                border: 1px dashed #cfd7e3;
+                border-radius: 4px;
+                background: #fbfcfe;
+            }
+
+            .messages {
+                min-height: 48px;
+            }
+
+            .statuses {
+                display: grid;
+                gap: 8px;
+                margin-top: 14px;
+            }
+
+            .status {
+                display: grid;
+                grid-template-columns: 70px minmax(0, 1fr);
+                gap: 8px;
+                padding: 8px;
+                border: 1px solid #d9e0ea;
+                border-radius: 4px;
+            }
+
+            .status strong {
+                color: #5f6b7a;
+                text-transform: uppercase;
+            }
+
+            .status.pass strong {
+                color: #18794e;
+            }
+
+            .status.fail strong {
+                color: #b42318;
+            }
+
+            .status.warn strong {
+                color: #936316;
+            }
+
+            @media (max-width: 840px) {
+                .grid,
+                .split {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <section class="intro">
+                <h1>Local renderV2Message SDK Test</h1>
+                <p>
+                    Requires <code>npm run dev</code>. This page loads <code>/sdk/js</code>, renders
+                    <code>paypal.Messages</code>, routes the local smart/message proxy through
+                    <code>renderV2Message</code>, and verifies the iframe contains v2 markup.
+                </p>
+            </section>
+
+            <div class="grid">
+                <section class="panel">
+                    <div class="panel-header">
+                        <h2>Controls</h2>
+                    </div>
+                    <div class="panel-body controls">
+                        <label>
+                            Account
+                            <input id="account" value="DEV_US_MULTI" />
+                        </label>
+                        <div class="split">
+                            <label>
+                                Amount
+                                <input id="amount" value="100.00" />
+                            </label>
+                            <label>
+                                Buyer country
+                                <input id="buyerCountry" value="US" />
+                            </label>
+                        </div>
+                        <label>
+                            Style preset
+                            <select id="preset">
+                                <option value="text">Text, inline logo</option>
+                                <option value="text-right">Text, right logo</option>
+                                <option value="flex">Flex, blue 8x1</option>
+                                <option value="invalid">Invalid layout fallback</option>
+                            </select>
+                        </label>
+                        <div class="actions">
+                            <button id="run" class="primary" type="button">Run v2 Render</button>
+                            <button id="legacy" type="button">Run Legacy Control</button>
+                            <button id="clear" type="button">Clear</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-header">
+                        <h2>Message</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="render-area">
+                            <div id="message" class="messages" data-pp-message></div>
+                        </div>
+                        <div id="statuses" class="statuses"></div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="panel" style="margin-top: 16px">
+                <div class="panel-header">
+                    <h2>Evidence Log</h2>
+                </div>
+                <div class="panel-body">
+                    <pre id="log"></pre>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            const styles = {
+                text: {
+                    layout: 'text',
+                    logo: { type: 'inline' },
+                    text: { color: 'black', size: 14, align: 'left' }
+                },
+                'text-right': {
+                    layout: 'text',
+                    logo: { type: 'primary', position: 'right' },
+                    text: { color: 'black', size: 14, align: 'left' }
+                },
+                flex: {
+                    layout: 'flex',
+                    color: 'blue',
+                    ratio: '8x1'
+                },
+                invalid: {
+                    layout: 'custom',
+                    markup: '<strong>legacy-only custom markup</strong>'
+                }
+            };
+
+            const state = {
+                sdkLoaded: false,
+                entries: []
+            };
+
+            const elements = {
+                account: document.getElementById('account'),
+                amount: document.getElementById('amount'),
+                buyerCountry: document.getElementById('buyerCountry'),
+                preset: document.getElementById('preset'),
+                message: document.getElementById('message'),
+                statuses: document.getElementById('statuses'),
+                log: document.getElementById('log')
+            };
+
+            window.__MESSAGING_GLOBALS__ = window.__MESSAGING_GLOBALS__ || { merchantProfile: {} };
+            window.__FUNDING_ELIGIBILITY__ = window.__FUNDING_ELIGIBILITY__ || { paylater: {} };
+
+            function log(label, data) {
+                state.entries.push({ at: new Date().toISOString(), label, data });
+                elements.log.textContent = state.entries
+                    .map(entry => `${entry.at} ${entry.label}\n${JSON.stringify(entry.data, null, 2)}`)
+                    .join('\n\n');
+                elements.log.scrollTop = elements.log.scrollHeight;
+                window.__v2SdkRenderHarness = { state, latestStyle: styles[elements.preset.value] };
+            }
+
+            function setStatus(key, tone, message) {
+                let node = document.querySelector(`[data-status="${key}"]`);
+                if (!node) {
+                    node = document.createElement('div');
+                    node.className = 'status';
+                    node.dataset.status = key;
+                    node.innerHTML = '<strong></strong><span></span>';
+                    elements.statuses.appendChild(node);
+                }
+                node.className = `status ${tone}`;
+                node.querySelector('strong').textContent = tone;
+                node.querySelector('span').textContent = message;
+            }
+
+            function clear() {
+                elements.message.innerHTML = '';
+                elements.statuses.innerHTML = '';
+                state.entries = [];
+                elements.log.textContent = '';
+            }
+
+            function loadSdk() {
+                if (state.sdkLoaded && window.paypal) {
+                    return Promise.resolve();
+                }
+
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = '/sdk/js?client-id=DEV_US_MULTI&components=messages&currency=USD&debug=true';
+                    script.onload = () => {
+                        state.sdkLoaded = true;
+                        setStatus('sdk', 'pass', 'Local SDK loaded.');
+                        log('sdk loaded', { keys: Object.keys(window.paypal || {}) });
+                        resolve();
+                    };
+                    script.onerror = () => reject(new Error(`Failed to load ${script.src}`));
+                    document.head.appendChild(script);
+                });
+            }
+
+            function inspectIframe(expectV2) {
+                const iframe = elements.message.querySelector('iframe');
+                if (!iframe) {
+                    setStatus('iframe', 'fail', 'No message iframe found.');
+                    return;
+                }
+
+                const rect = iframe.getBoundingClientRect();
+                const src = iframe.getAttribute('src');
+                setStatus(
+                    'iframe',
+                    rect.width > 0 && rect.height > 0 ? 'pass' : 'fail',
+                    `Iframe size ${Math.round(rect.width)} x ${Math.round(rect.height)}.`
+                );
+                log('iframe src', { src });
+
+                try {
+                    const doc = iframe.contentDocument;
+                    const html = doc.documentElement.outerHTML;
+                    const hasV2Root = Boolean(doc.querySelector('.pp-message'));
+                    const hasMain = Boolean(doc.querySelector('.pp-message .main'));
+                    const hasExpectedText = html.includes('Pay in 4 interest-free payments');
+                    const hasLegacyRoot = Boolean(doc.querySelector('.message__messaging'));
+
+                    log('iframe dom', {
+                        hasV2Root,
+                        hasMain,
+                        hasExpectedText,
+                        hasLegacyRoot,
+                        bodyText: doc.body.innerText.trim()
+                    });
+
+                    if (expectV2) {
+                        setStatus(
+                            'renderer',
+                            hasV2Root && hasMain && hasExpectedText ? 'pass' : 'fail',
+                            hasV2Root && hasMain && hasExpectedText
+                                ? 'renderV2Message produced .pp-message markup with expected content.'
+                                : 'Expected v2 markup was not found.'
+                        );
+                    } else {
+                        setStatus(
+                            'renderer',
+                            hasLegacyRoot && !hasV2Root ? 'pass' : 'warn',
+                            hasLegacyRoot && !hasV2Root
+                                ? 'Legacy control produced renderMessage markup.'
+                                : 'Legacy control did not produce the expected legacy marker.'
+                        );
+                    }
+                } catch (err) {
+                    setStatus('renderer', 'warn', `Could not inspect iframe DOM: ${err.message}`);
+                    log('iframe inspect error', { message: err.message });
+                }
+            }
+
+            async function run({ expectV2 }) {
+                clear();
+                await loadSdk();
+
+                const options = {
+                    account: elements.account.value.trim(),
+                    amount: Number(elements.amount.value),
+                    currency: 'USD',
+                    buyerCountry: elements.buyerCountry.value.trim(),
+                    pageType: 'product',
+                    features: expectV2 ? 'render-v2-message' : undefined,
+                    style: styles[elements.preset.value],
+                    onRender: event => {
+                        log('onRender', event);
+                        setStatus('onRender', 'pass', 'onRender fired from message iframe.');
+                    },
+                    onClick: event => log('onClick', event),
+                    onApply: event => log('onApply', event)
+                };
+
+                log('render requested', { expectV2, options });
+                await window.paypal.Messages(options).render('#message');
+                window.setTimeout(() => inspectIframe(expectV2), 1000);
+            }
+
+            document.getElementById('run').addEventListener('click', () => run({ expectV2: true }));
+            document.getElementById('legacy').addEventListener('click', () => run({ expectV2: false }));
+            document.getElementById('clear').addEventListener('click', clear);
+            window.__v2SdkRenderHarness = { state, latestStyle: styles[elements.preset.value] };
+        </script>
+    </body>
+</html>
