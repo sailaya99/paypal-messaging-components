@@ -5,10 +5,11 @@ import { h, Fragment } from 'preact';
 import { buildContentLabel } from './utils/buildContentLabel';
 import { renderBlock } from './utils/renderBlock';
 import flexStyles from './flexStyles';
+import { FLEX_DEFAULTS } from './constants';
 
 export default function FlexMessage({ style, v2Content }) {
-    const color = style.color ?? 'black';
-    const ratio = style.ratio ?? '8x1';
+    const color = style.color ?? FLEX_DEFAULTS.color;
+    const ratio = style.ratio ?? FLEX_DEFAULTS.ratio;
 
     const mainItems = v2Content?.main_items ?? [];
     const actionItems = v2Content?.action_items ?? [];

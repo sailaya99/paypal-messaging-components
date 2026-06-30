@@ -1,5 +1,6 @@
 import render from 'server/v2/render';
 import validateStyle from 'server/v2/validateStyle';
+import { FLEX_DEFAULTS } from 'server/v2/constants';
 
 const mockLog = jest.fn();
 
@@ -647,6 +648,14 @@ describe('v2 render flex layout', () => {
         const result = render(baseFlexOptions, {}, mockLog);
         expect(typeof result).toBe('string');
         expect(result).toContain('class="pp-message pp-flex');
+    });
+
+    test('bare render({ style: { layout: "flex" } }) defaults match validateStyle defaults', () => {
+        const validatedStyle = validateStyle(mockLog, { layout: 'flex' });
+        const directResult = render({ style: { layout: 'flex' } }, flexContentWithLogo, mockLog);
+        const validatedResult = render({ style: validatedStyle }, flexContentWithLogo, mockLog);
+        expect(directResult).toContain(`class="pp-message pp-flex ${FLEX_DEFAULTS.color} r-${FLEX_DEFAULTS.ratio}"`);
+        expect(directResult).toBe(validatedResult);
     });
 });
 
