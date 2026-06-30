@@ -92,6 +92,8 @@ module.exports = (env = {}) => {
                         __NAMESPACE__: 'paypal',
                         __VERSION__: '1.0.55',
                         __COMPONENTS__: ['messages'],
+                        __MESSAGING_GLOBALS__: { merchantProfile: {} },
+                        __FUNDING_ELIGIBILITY__: { paylater: {} },
                         __PAYPAL_DOMAIN__: `${PROTOCOL}://${HOSTNAME}:${PORT}`,
                         __PAYPAL_API_DOMAIN__: `${PROTOCOL}://${HOSTNAME}:${PORT}`
                     }
